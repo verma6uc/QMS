@@ -414,4 +414,228 @@ This page empowers investigators to conduct thorough, structured investigations 
 
 
 
+### CAPA Action Plan Page Details
 
+**Page Name:** CAPA Action Plan  
+**Slug:** `/capa-action-plan`  
+**Role:** QA Team, Investigator
+
+**Description:**  
+This page is dedicated to formulating, documenting, and monitoring Corrective and Preventive Actions (CAPA) related to deviations investigated within the system. It serves as a central point for defining actions to address the root causes identified in investigations, ensuring compliance and continuous improvement.
+
+**List of Sections:**
+
+1.  **CAPA Identification**
+    
+    *   **Name:** CAPA Setup
+    *   **Functionality:**
+        *   Allows users to define new CAPA or review existing ones linked to specific deviation cases.
+        *   Includes fields to specify CAPA type (corrective or preventive), associated deviation number, and a brief description of the action.
+    *   **Type of Section:** Form (Dropdown for selecting CAPA type, input fields for deviation linkage and description)
+2.  **Action Plan Details**
+    
+    *   **Name:** Detailed Action Planning
+    *   **Functionality:**
+        *   Provides a detailed form for outlining the steps necessary to implement the CAPA, including responsible parties, timelines, and required resources.
+        *   Supports the assignment of tasks to specific team members and setting deadlines for each action step.
+    *   **Type of Section:** Form (Input fields for action steps, dropdowns for assigning responsibilities, date pickers for deadlines)
+3.  **Risk Assessment**
+    
+    *   **Name:** CAPA Risk Assessment
+    *   **Functionality:**
+        *   Facilitates the assessment of risks associated with implementing the CAPA, allowing users to evaluate potential impacts on product quality, safety, and compliance.
+        *   Includes tools for risk scoring and mitigation plan formulation.
+    *   **Type of Section:** Interactive Tool (Risk matrix inputs, text areas for mitigation strategies)
+4.  **Effectiveness Monitoring**
+    
+    *   **Name:** Monitoring and Effectiveness
+    *   **Functionality:**
+        *   Allows for the setup of effectiveness checks to ensure that CAPA actions have achieved their intended outcomes.
+        *   Provides options to schedule follow-up reviews and record the results of effectiveness assessments.
+    *   **Type of Section:** Form (Date pickers for scheduling reviews, text areas for recording outcomes)
+5.  **Documentation and Approval**
+    
+    *   **Name:** CAPA Documentation and Sign-off
+    *   **Functionality:**
+        *   Provides a summary of all CAPA plans ready for review and approval by the QA team or other designated authorities.
+        *   Includes functionality for attaching supporting documentation and obtaining electronic signatures for CAPA approval.
+    *   **Type of Section:** Review and Approval (Attachment upload feature, electronic signature pads)
+6.  **CAPA Status Tracking**
+    
+    *   **Name:** CAPA Status and Updates
+    *   **Functionality:**
+        *   Enables real-time tracking of CAPA implementation status, providing updates and alerts to stakeholders about progress and any issues encountered.
+        *   Supports updating CAPA status from 'Planned' to 'In Progress' to 'Completed'.
+    *   **Type of Section:** Tracking Dashboard (Interactive status indicators, update buttons)
+
+This page facilitates a comprehensive approach to managing corrective and preventive actions, from planning through implementation and monitoring, ensuring that each step is well-documented, approved, and effectively executed.
+
+
+
+
+### Deviation Closure Confirmation Page Details
+
+**Page Name:** Deviation Closure Confirmation  
+**Slug:** `/deviation-closure-confirmation`  
+**Role:** QA Team
+
+**Description:**  
+This page is utilized by the QA team to finalize the closure of a deviation after all investigations, CAPA implementations, and effectiveness checks are deemed satisfactory. It ensures that all required actions have been completed properly and all documentation is in place for compliance and audit purposes.
+
+**List of Sections:**
+
+1.  **Deviation Summary**
+    
+    *   **Name:** Deviation Review Summary
+    *   **Functionality:**
+        *   Displays a comprehensive summary of the deviation, including all actions taken from initiation through resolution.
+        *   Provides links to view detailed reports and documents associated with the deviation.
+    *   **Type of Section:** Information Display (Text display with hyperlinks to documents)
+2.  **CAPA Effectiveness Review**
+    
+    *   **Name:** CAPA Effectiveness Check
+    *   **Functionality:**
+        *   Allows the QA team to review the effectiveness of CAPA measures applied to the deviation.
+        *   Includes a section for entering final assessments and any additional comments on the outcomes of the CAPA actions.
+    *   **Type of Section:** Form (Text areas for comments, checklist for confirming effectiveness)
+3.  **Final Risk Assessment**
+    
+    *   **Name:** Final Risk Confirmation
+    *   **Functionality:**
+        *   Provides a tool for the QA team to perform a final risk assessment, ensuring that all risks associated with the deviation have been mitigated appropriately.
+        *   Includes visual aids like risk matrices and final scoring systems to assist in the evaluation.
+    *   **Type of Section:** Interactive Tool (Risk matrix inputs, final risk score display)
+4.  **Closure Approval**
+    
+    *   **Name:** Deviation Closure Approval
+    *   **Functionality:**
+        *   Facilitates the final approval process where QA team leaders or designated approvers can officially close the deviation.
+        *   Includes electronic signature capabilities and a section for final approver comments.
+    *   **Type of Section:** Approval Form (Electronic signature pad, text area for approver comments)
+5.  **Documentation Archival**
+    
+    *   **Name:** Documentation and Archival
+    *   **Functionality:**
+        *   Provides options for archiving all related documentation, ensuring compliance with regulatory requirements and ease of access for future audits.
+        *   Supports the attachment of final documents and the generation of a closure report that encapsulates the entire deviation handling process.
+    *   **Type of Section:** Document Management (File upload feature, downloadable closure report)
+6.  **Notification and Communication**
+    
+    *   **Name:** Closure Notification
+    *   **Functionality:**
+        *   Sends notifications to all stakeholders about the deviation closure, ensuring all relevant parties are informed.
+        *   Configurable to send automatic updates to systems or individuals affected by the deviation or its resolution.
+    *   **Type of Section:** Notification System (Email template configuration, automatic dispatch settings)
+
+This page streamlines the final stages of the deviation management process, ensuring that every aspect is thoroughly reviewed, approved, and documented, maintaining high standards of quality assurance and regulatory compliance.
+
+
+
+
+### Deviation Management Dashboard Page Details
+
+**Page Name:** Deviation Management Dashboard  
+**Slug:** `/deviation-dashboard`  
+**Role:** All Roles
+
+**Description:**  
+This page serves as a central hub for users of all roles to monitor and manage deviations. It provides a comprehensive overview of all current and historical deviations, allowing users to quickly assess status, manage tasks, and navigate to more detailed pages for individual deviations.
+
+**List of Sections:**
+
+1.  **Dashboard Overview**
+    
+    *   **Name:** Overview Panel
+    *   **Functionality:**
+        *   Displays key metrics and statistics about deviations, such as total deviations, open vs closed deviations, and deviations by category.
+        *   Interactive charts and graphs provide a visual summary of deviation trends and status updates.
+    *   **Type of Section:** Dashboard Widgets (Graphs, charts, and counters)
+2.  **Deviation List**
+    
+    *   **Name:** Active Deviations List
+    *   **Functionality:**
+        *   Provides a searchable and sortable list of all active deviations, with key details such as deviation number, status, initiation date, and associated department or product.
+        *   Allows users to filter deviations based on status, department, and other criteria.
+    *   **Type of Section:** Data Table (Interactive table with filter options)
+3.  **My Tasks**
+    
+    *   **Name:** My Deviation Tasks
+    *   **Functionality:**
+        *   Displays a list of tasks assigned to the logged-in user, related to their role in managing or resolving deviations.
+        *   Includes quick actions such as view details, update status, and mark as complete.
+    *   **Type of Section:** Task List (List view with action buttons)
+4.  **Notifications and Alerts**
+    
+    *   **Name:** Alerts and Notifications
+    *   **Functionality:**
+        *   Shows recent notifications and alerts about deviations that require the user’s attention, such as pending approvals, approaching deadlines, or changes in deviation status.
+        *   Provides direct links to the relevant deviation forms or details pages.
+    *   **Type of Section:** Notification Panel (List of clickable alerts)
+5.  **Quick Actions**
+    
+    *   **Name:** Deviation Quick Actions
+    *   **Functionality:**
+        *   Offers buttons or links for common actions such as initiating a new deviation, submitting a CAPA, or reviewing pending tasks.
+        *   Customizable based on the user’s role and permissions, ensuring that each user sees the most relevant options.
+    *   **Type of Section:** Action Buttons (Configurable buttons and links)
+6.  **Historical Data**
+    
+    *   **Name:** Historical Deviation Analysis
+    *   **Functionality:**
+        *   Allows users to access and analyze past deviations to learn from historical data and trends.
+        *   Supports exporting data for further analysis or reporting purposes outside of the system.
+    *   **Type of Section:** Report Generator (Downloadable reports, historical data charts)
+
+This dashboard is designed to facilitate efficient deviation management by providing a user-friendly interface that organizes all necessary information and tools in one place. It enhances the visibility of deviation statuses and streamlines the communication and action steps required across different roles within the organization.
+
+
+
+### Deviation Historical Data Page Details
+
+**Page Name:** Deviation Historical Data  
+**Slug:** `/deviation-historical-data`  
+**Role:** QA Team, Department Head
+
+**Description:**  
+This page is designed for QA teams and department heads to review and analyze historical deviation records. It facilitates detailed insights into past incidents, helping to identify patterns, assess risk management effectiveness, and guide future preventive strategies.
+
+**List of Sections:**
+
+1.  **Historical Deviation Search**
+    
+    *   **Name:** Deviation Search Panel
+    *   **Functionality:**
+        *   Provides a comprehensive search interface to filter historical deviations by date range, status, department, product, and more.
+        *   Users can refine searches to find specific deviations or view trends over time.
+    *   **Type of Section:** Search Form (Input fields with various filters)
+2.  **Deviation Records Table**
+    
+    *   **Name:** Historical Deviations List
+    *   **Functionality:**
+        *   Displays a detailed list of deviations matching the search criteria.
+        *   Each record includes the deviation number, initiation date, description, resolution status, and links to detailed review pages.
+        *   Allows sorting and pagination for easier navigation of large data sets.
+    *   **Type of Section:** Data Table (Sortable and paginated table)
+3.  **Trend Analysis**
+    
+    *   **Name:** Deviation Trend Analysis
+    *   **Functionality:**
+        *   Graphical representations of deviation trends such as frequency over time, common causes, and departmental impacts.
+        *   Interactive charts enable users to visualize and drill down into specific data points for more detailed analysis.
+    *   **Type of Section:** Charts (Bar graphs, line charts, pie charts)
+4.  **Export Data**
+    
+    *   **Name:** Data Export Tools
+    *   **Functionality:**
+        *   Allows users to export the filtered deviation data into various formats such as Excel, PDF, or CSV for offline analysis and reporting.
+        *   Provides options to customize the data fields included in the export.
+    *   **Type of Section:** Export Options (Buttons or links for data export)
+5.  **Documentation Review**
+    
+    *   **Name:** Related Documentation
+    *   **Functionality:**
+        *   Links to access related documents such as investigation reports, CAPA documents, and final closure reports associated with historical deviations.
+        *   Provides a centralized place to review all documentation related to a specific deviation record.
+    *   **Type of Section:** Document Links (List of clickable document names)
+
+This page not only serves as an archive for past deviations but also as a critical tool for continuous improvement by allowing leaders to learn from history, identify systemic issues, and enforce stronger preventive measures. It is an essential component for maintaining compliance and enhancing the overall quality control process within the organization.

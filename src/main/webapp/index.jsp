@@ -1,166 +1,59 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr" data-bs-theme="light" data-color-theme="Blue_Theme" data-layout="vertical">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Create Deviation Report</title>
-    <link rel="stylesheet" href="https://bootstrapdemos.wrappixel.com/spike/dist/assets/css/styles.css"> 
+  <!-- Required meta tags -->
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Favicon icon-->
+  <link rel="shortcut icon" type="image/png" href="/assets/images/logos/favicon.png" />
+
+  <!-- Core Css -->
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+
+  <title>Leucine QMS Admin</title>
 </head>
+
 <body>
-    <h1>Create Deviation Report</h1>
-    <form action="submitDeviation" method="post">
-        <fieldset>
-            <legend>Basic Information</legend>
-            <label for="dateOccurrence">Date of Occurrence:</label>
-            <input type="date" id="dateOccurrence" name="dateOccurrence" required><br>
-
-            <label for="timeIdentification">Time of Identification:</label>
-            <input type="time" id="timeIdentification" name="timeIdentification" required><br>
-
-            <label for="dateIdentification">Date of Identification:</label>
-            <input type="date" id="dateIdentification" name="dateIdentification" required><br>
-
-            <div id="delayJustificationContainer" style="display:none;">
-                <label for="justificationForDelay">Justification for Delay:</label>
-                <textarea id="justificationForDelay" name="justificationForDelay"></textarea>
+  <!-- Preloader would go here -->
+  
+  <div id="main-wrapper" class="p-0 bg-white auth-customizer-none">
+    <div class="auth-login position-relative overflow-hidden d-flex align-items-center justify-content-center px-7 px-xxl-0 rounded-3 h-n20">
+      <div class="auth-login-shape position-relative w-100">
+        <div class="auth-login-wrapper card mb-0 container position-relative z-1 h-100 mh-n100">
+          <div class="card-body">
+            <img src="/assets/images/logos/logo-dark.svg" alt="Leucine QMS Logo" class="mb-4">
+            <div class="row align-items-center justify-content-center">
+              <div class="col-md-8">
+                <h2 class="mb-4 fs-8 fw-bolder text-center">Welcome to Leucine QMS</h2>
+                <p class="text-dark fs-4 mb-4 text-center">Your Admin Dashboard</p>
+                
+                <form action="/auth" method="POST"> <!-- loginServletUrl should be replaced with the actual servlet URL -->
+                  <div class="mb-4">
+                    <label for="username" class="form-label fw-bold">Username</label>
+                    <input type="text" class="form-control py-6" id="username" name="username" required>
+                  </div>
+                  <div class="mb-4">
+                    <label for="password" class="form-label fw-bold">Password</label>
+                    <input type="password" class="form-control py-6" id="password" name="password" required>
+                  </div>
+                  
+                  <button type="submit" class="btn btn-primary w-100 mb-3 rounded-pill">Sign In</button>
+                </form>
+              </div>
             </div>
-        </fieldset>
-
-        <fieldset>
-            <legend>Deviation Details</legend>
-            <label for="deviationType">Deviation Type:</label>
-            <select id="deviationType" name="deviationType" onchange="showConditionalFields(this.value)">
-                <option value="">Select Type</option>
-                <option value="Product">Product</option>
-                <option value="Material">Material</option>
-                <option value="Equipment">Equipment</option>
-                <option value="Document">Document</option>
-            </select><br>
-
-            <div id="productInfo" style="display:none;">
-                <label for="productSelection">Product:</label>
-                <select id="productSelection" name="productSelection">
-                    <!-- Options will be loaded based on server-side data -->
-                </select><br>
-            </div>
-
-            <div id="materialInfo" style="display:none;">
-                <label for="materialSelection">Material:</label>
-                <select id="materialSelection" name="materialSelection">
-                    <!-- Options will be loaded based on server-side data -->
-                </select>
-                <label for="lotNumber">Lot Number:</label>
-                <input type="text" id="lotNumber" name="lotNumber"><br>
-            </div>
-
-            <div id="equipmentInfo" style="display:none;">
-                <label for="equipmentId">Equipment ID:</label>
-                <input type="text" id="equipmentId" name="equipmentId"><br>
-            </div>
-
-            <div id="documentInfo" style="display:none;">
-                <label for="documentSelection">Document:</label>
-                <select id="documentSelection" name="documentSelection">
-                    <!-- Options will be loaded based on server-side data -->
-                </select><br>
-            </div>
-        </fieldset>
-
-        <fieldset>
-            <legend>Description and Impact</legend>
-            <label for="description">Description:</label>
-            <textarea id="description" name="description" required></textarea><br>
-
-            <label for="impactOnBatches">Impact on batches involved:</label>
-            <input type="checkbox" id="impactOnBatches" name="impactOnBatches" value="Yes" onchange="toggleBatchAffected(this.checked)">
-            <div id="batchInvolvedInfo" style="display:none;">
-                <label for="batchesInvolved">Batches Involved:</label>
-                <input type="text" id="batchesInvolved" name="batchesInvolved"><br>
-            </div>
-        </fieldset>
-
-        <fieldset>
-            <legend>Additional Information</legend>
-            <label for="additionalComments">Additional Comments:</label>
-            <textarea id="additionalComments" name="additionalComments"></textarea><br>
-
-            <label for="fileAttachment">File Attachment:</label>
-            <input type="file" id="fileAttachment" name="fileAttachment"><br>
-        </fieldset>
-
-        <input type="submit" value="Submit">
-    </form>
-
-    <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-        const deviationTypeSelect = document.getElementById('deviationType');
-        const dateIdentification = document.getElementById('dateIdentification');
-
-        // Show or hide conditional fields based on deviation type selected
-        function showConditionalFields(value) {
-            hideAllConditionalFields();
-            switch(value) {
-                case 'Product':
-                    document.getElementById('productInfo').style.display = 'block';
-                    break;
-                case 'Material':
-                    document.getElementById('materialInfo').style.display = 'block';
-                    break;
-                case 'Equipment':
-                    document.getElementById('equipmentInfo').style.display = 'block';
-                    break;
-                case 'Document':
-                    document.getElementById('documentInfo').style.display = 'block';
-                    break;
-                default:
-                    hideAllConditionalFields();
-            }
-        }
-
-        // Hide all conditional fields initially or as needed
-        function hideAllConditionalFields() {
-            document.getElementById('productInfo').style.display = 'none';
-            document.getElementById('materialInfo').style.display = 'none';
-            document.getElementById('equipmentInfo').style.display = 'none';
-            document.getElementById('documentInfo').style.display = 'none';
-        }
-
-        // Show or hide batches involved input based on checkbox
-        function toggleBatchAffected(checked) {
-            document.getElementById('batchInvolvedInfo').style.display = checked ? 'block' : 'none';
-        }
-
-        // Check for reporting delay and show justification if needed
-        function checkReportingDelay() {
-            const currentDateTime = new Date();
-            const identificationDatetime = new Date(dateIdentification.value);
-            if (currentDateTime - identificationDatetime > 86400000) { // 86400000ms = 24 hours
-                document.getElementById('delayJustificationContainer').style.display = 'block';
-            } else {
-                document.getElementById('delayJustificationContainer').style.display = 'none';
-            }
-        }
-
-        // Bind change events to form elements
-        deviationTypeSelect.addEventListener('change', function() {
-            showConditionalFields(this.value);
-        });
-
-        dateIdentification.addEventListener('change', checkReportingDelay);
-
-        const form = document.querySelector('form');
-
-        form.addEventListener('submit', function(event) {
-            if (!form.checkValidity()) {
-                event.preventDefault(); // Prevent form submission
-                alert('Please fill all required fields and correct the errors.');
-            }
-            // Additional custom validations can be added here
-        });
-
-        // Initialize
-        hideAllConditionalFields(); // Make sure to hide all conditional fields on initial load
-        checkReportingDelay(); // Check reporting delay on initial load
-    });</script>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <!-- Import Js Files -->
+  <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/libs/simplebar/dist/simplebar.min.js"></script>
+  
 </body>
+
 </html>

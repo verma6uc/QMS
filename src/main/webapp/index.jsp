@@ -60,8 +60,8 @@
 												</div>
 											</div>
 											<div class="col-lg-6 col-xl-5">
-												<h2 class="mb-6 fs-8 fw-bolder">Welcome to Leucine</h2>
-												<p class="text-dark fs-4 mb-7">Login Page</p>
+												<h2 class="mb-6 fs-8 fw-bolder">Welcome to Leucine QMS</h2>
+												<p class="text-dark fs-4 mb-7">Your Admin Dashbboard</p>
 
 												<form action="/login" method="post">
 													<div class="mb-7">

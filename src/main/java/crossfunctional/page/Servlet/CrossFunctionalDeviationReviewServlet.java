@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet("/crossfunctionaldeviationreview")
+@WebServlet("/cross-functional-deviation-review")
 public class CrossFunctionalDeviationReviewServlet extends HttpServlet{
 
 

@@ -152,7 +152,7 @@
 							
 						</div>
 					</div>
-					<a href="/LogOutServlet" class="position-relative"
+					<a href="/logout" class="position-relative"
 						data-bs-toggle="tooltip" data-bs-placement="top"
 						data-bs-title="Logout"> <iconify-icon
 							icon="solar:logout-line-duotone" class="fs-8"></iconify-icon>

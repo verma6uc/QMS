@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/qadeviationevaluation")
+@WebServlet("/qa-deviation-evaluation")
 public class QaDeviationEvaluationServlet extends HttpServlet{
 
 

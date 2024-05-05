@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/capaeffectivenessmonitoring")
+@WebServlet("/capa-effectiveness-monitoring")
 public class CapaEffectivenessMonitoringServlet extends HttpServlet{
 
 

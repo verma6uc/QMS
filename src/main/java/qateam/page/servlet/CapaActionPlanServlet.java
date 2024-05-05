@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/capaactionplan")
+@WebServlet("/capa-action-plan")
 public class CapaActionPlanServlet extends HttpServlet{
 
 

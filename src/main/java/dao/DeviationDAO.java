@@ -2,6 +2,7 @@ package dao;
 
 import model.Deviation;
 import model.Enums;
+import model.Enums.DeviationStatus;
 import utils.DatabaseUtility;
 
 import java.sql.Connection;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import dto.DepartmentalDeviationReviewDTO;
 import dto.DeviationInitiateDTO;
 
 public class DeviationDAO {
@@ -303,6 +305,48 @@ public class DeviationDAO {
 				stmt.addBatch();
 			}
 			stmt.executeBatch();
+		}
+	}
+
+	public void updateDeviationStatusAndAddComment(DepartmentalDeviationReviewDTO dto) throws SQLException {
+		Connection conn = DatabaseUtility.connect();
+		try {
+			conn.setAutoCommit(false); // Start transaction for atomicity
+
+			// 1. Update deviation status
+			String updateDeviationSql = "UPDATE deviations SET status = ?::deviation_status, updated_at = CURRENT_TIMESTAMP WHERE id = ?";
+			PreparedStatement updateStmt = conn.prepareStatement(updateDeviationSql);
+			updateStmt.setString(1, dto.getDecision());
+			updateStmt.setInt(2, dto.getDeviationId());
+			updateStmt.executeUpdate();
+
+			// 2. Insert review comments (always required)
+			String insertCommentSql = "INSERT INTO comments (content, author_id, related_table, related_id, created_at) VALUES (?, ?, 'deviations', ?, CURRENT_TIMESTAMP)";
+			PreparedStatement insertCommentStmt = conn.prepareStatement(insertCommentSql);
+			insertCommentStmt.setString(1, dto.getReviewComments());
+			// Assuming you have a mechanism to get the current user's ID:
+			insertCommentStmt.setInt(2, dto.getAuthorId()); // Replace with actual user ID retrieval logic
+			insertCommentStmt.setInt(3, dto.getDeviationId());
+			insertCommentStmt.executeUpdate();
+
+			// 3. Insert justification (if needed)
+			if (dto.getDecision().equals(DeviationStatus.REJECTED.name())
+					|| dto.getDecision().equals(DeviationStatus.PENDING_MORE_INFO.name())) {
+				String insertJustificationSql = "INSERT INTO comments (content, author_id, related_table, related_id, created_at) VALUES (?, ?, 'deviations', ?, CURRENT_TIMESTAMP)";
+				PreparedStatement insertJustificationStmt = conn.prepareStatement(insertJustificationSql);
+				insertJustificationStmt.setString(1, dto.getJustificationForDecision());
+				insertJustificationStmt.setInt(2, dto.getAuthorId()); // Replace with actual user ID retrieval logic
+				insertJustificationStmt.setInt(3, dto.getDeviationId());
+				insertJustificationStmt.executeUpdate();
+			}
+
+			conn.commit(); // Commit transaction if all steps succeed
+		} catch (SQLException e) {
+			conn.rollback(); // Rollback on error to maintain data consistency
+			throw e;
+		} finally {
+			conn.setAutoCommit(true); // Restore auto-commit
+			conn.close();
 		}
 	}
 }

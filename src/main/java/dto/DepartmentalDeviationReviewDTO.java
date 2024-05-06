@@ -5,6 +5,7 @@ public class DepartmentalDeviationReviewDTO {
 	private String reviewComments; // Required input
 	private String decision; // Required input, dropdown values
 	private String justificationForDecision; // Optional, shown based on 'decision' value
+	private Integer authorId;
 
 	public DepartmentalDeviationReviewDTO() {
 		super();
@@ -12,12 +13,13 @@ public class DepartmentalDeviationReviewDTO {
 	}
 
 	public DepartmentalDeviationReviewDTO(Integer deviationId, String reviewComments, String decision,
-			String justificationForDecision) {
+			String justificationForDecision, Integer authorId) {
 		super();
 		this.deviationId = deviationId;
 		this.reviewComments = reviewComments;
 		this.decision = decision;
 		this.justificationForDecision = justificationForDecision;
+		this.authorId = authorId;
 	}
 
 	public Integer getDeviationId() {
@@ -50,6 +52,14 @@ public class DepartmentalDeviationReviewDTO {
 
 	public void setJustificationForDecision(String justificationForDecision) {
 		this.justificationForDecision = justificationForDecision;
+	}
+
+	public Integer getAuthorId() {
+		return authorId;
+	}
+
+	public void setAuthorId(Integer authorId) {
+		this.authorId = authorId;
 	}
 
 	@Override

@@ -11,10 +11,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import dto.CrossFunctionalDeviationReviewDTO;
 import dto.DepartmentalDeviationReviewDTO;
 import dto.DeviationInitiateDTO;
 
@@ -347,6 +349,91 @@ public class DeviationDAO {
 		} finally {
 			conn.setAutoCommit(true); // Restore auto-commit
 			conn.close();
+		}
+	}
+
+	public void submitDecision(CrossFunctionalDeviationReviewDTO reviewDTO, int deviationId, int userId)
+			throws SQLException {
+		// Update the status of the deviation
+		updateDeviationStatus(reviewDTO.getDecision(), deviationId, reviewDTO.getJustification());
+
+		// Log the comments
+		logComments(reviewDTO.getComments(), deviationId, userId);
+
+		// Update department and user/user group associations (assuming separate tables
+		// exist)
+		if (reviewDTO.getDecision().equalsIgnoreCase("Submit")) {
+			updateDepartmentAssociations(deviationId, reviewDTO.getDepartment());
+			updateUserGroupAssociations(deviationId, reviewDTO.getUserGroup());
+		}
+	}
+
+	private void updateDeviationStatus(String decision, int deviationId, String justification) throws SQLException {
+		Connection connection = DatabaseUtility.connect();
+		String sql = "UPDATE deviations SET status = ?, justification_for_return = ?, updated_at = ? WHERE id = ?";
+		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			statement.setString(1, decision);
+			statement.setString(2, justification);
+			statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+			statement.setInt(4, deviationId);
+			statement.executeUpdate();
+		}
+	}
+
+	private void logComments(String comments, int deviationId, int userId) throws SQLException {
+		Connection connection = DatabaseUtility.connect();
+		if (comments != null && !comments.isEmpty()) {
+			String sql = "INSERT INTO comments (content, author_id, related_table, related_id, created_at) VALUES (?, ?, ?, ?, ?)";
+			try (PreparedStatement statement = connection.prepareStatement(sql)) {
+				statement.setString(1, comments);
+				statement.setInt(2, userId);
+				statement.setString(3, "deviations");
+				statement.setInt(4, deviationId);
+				statement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+				statement.executeUpdate();
+			}
+		}
+	}
+
+	private void updateDepartmentAssociations(int deviationId, List<Integer> departmentIds) throws SQLException {
+		Connection connection = DatabaseUtility.connect();
+		// Assuming a table 'deviation_departments' exists with columns 'deviation_id'
+		// and 'department_id'
+		String sqlDelete = "DELETE FROM deviation_departments WHERE deviation_id = ?";
+		String sqlInsert = "INSERT INTO deviation_departments (deviation_id, department_id) VALUES (?, ?)";
+
+		try (PreparedStatement deleteStatement = connection.prepareStatement(sqlDelete);
+				PreparedStatement insertStatement = connection.prepareStatement(sqlInsert)) {
+
+			deleteStatement.setInt(1, deviationId);
+			deleteStatement.executeUpdate();
+
+			for (Integer departmentId : departmentIds) {
+				insertStatement.setInt(1, deviationId);
+				insertStatement.setInt(2, departmentId);
+				insertStatement.executeUpdate();
+			}
+		}
+	}
+
+	private void updateUserGroupAssociations(int deviationId, List<Integer> userGroupIds) throws SQLException {
+		Connection connection = DatabaseUtility.connect();
+		// Assuming a table 'deviation_user_groups' exists with columns 'deviation_id'
+		// and 'user_group_id'
+		String sqlDelete = "DELETE FROM deviation_user_groups WHERE deviation_id = ?";
+		String sqlInsert = "INSERT INTO deviation_user_groups (deviation_id, user_group_id) VALUES (?, ?)";
+
+		try (PreparedStatement deleteStatement = connection.prepareStatement(sqlDelete);
+				PreparedStatement insertStatement = connection.prepareStatement(sqlInsert)) {
+
+			deleteStatement.setInt(1, deviationId);
+			deleteStatement.executeUpdate();
+
+			for (Integer userGroupId : userGroupIds) {
+				insertStatement.setInt(1, deviationId);
+				insertStatement.setInt(2, userGroupId);
+				insertStatement.executeUpdate();
+			}
 		}
 	}
 }

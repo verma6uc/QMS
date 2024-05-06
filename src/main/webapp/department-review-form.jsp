@@ -87,74 +87,97 @@
 
 					<!-- Key Metrics -->
 					<div class="card">
-    <div class="card-header">Departmental Review Form</div>
-    <div class="card-body">
-        <h5 class="card-title">Review Deviation Details</h5>
-        <form action="/action?widgetId=WIDGET_ID" method="post" id="departmental-review-form">
-            <div class="mb-3">
-                <label for="deviationNumber" class="form-label">Deviation Number</label>
-                <input type="text" class="form-control" id="deviationNumber" value="DEV001" readonly>
-            </div>
-            <div class="mb-3">
-                <label for="dateOfOccurrence" class="form-label">Date of Occurrence</label>
-                <input type="text" class="form-control" id="dateOfOccurrence" value="2023-01-01" readonly>
-            </div>
-            <div class="mb-3">
-                <label for="dateOfIdentification" class="form-label">Date of Identification</label>
-                <input type="text" class="form-control" id="dateOfIdentification" value="2023-01-02" readonly>
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="description" rows="3" readonly>This is a dummy description of the deviation explaining the issue in detail.</textarea>
-            </div>
-            <div class="mb-3">
-                <label for="reviewComments" class="form-label">Review Comments</label>
-                <textarea class="form-control" id="reviewComments" rows="3" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="decision" class="form-label">Decision</label>
-                <select class="form-select" id="decision" required onchange="showJustificationInput()">
-                    <option value="">Choose...</option>
-                    <option value="Approve">Approve</option>
-                    <option value="Need More Info">Need More Info</option>
-                    <option value="Reject">Reject</option>
-                </select>
-            </div>
-            <div class="mb-3 d-none" id="justificationWrapper">
-                <label for="justificationForDecision" class="form-label">Justification for Decision</label>
-                <textarea class="form-control" id="justificationForDecision" rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Review</button>
-        </form>
-    </div>
-</div>
+						<div class="card-header">Departmental Review Form</div>
+						<div class="card-body">
+							<h5 class="card-title">Review Deviation Details</h5>
+							<form action="/action?widgetId=WIDGET_ID" method="post"
+								id="departmental-review-form">
+								<div class="mb-3">
+									<label for="deviationNumber" class="form-label">Deviation
+										Number</label> <input type="text" class="form-control"
+										id="deviationNumber" value="" data-sql="select title  from deviations d where id=<%=request.getParameter("deviation_id") %>" readonly>
+								</div>
+								<div class="mb-3">
+									<label for="dateOfOccurrence" class="form-label">Date
+										of Occurrence</label> <input type="text" class="form-control"
+										id="dateOfOccurrence" value="2023-01-01" readonly>
+								</div>
+								<div class="mb-3">
+									<label for="dateOfIdentification" class="form-label">Date
+										of Identification</label> <input type="text" class="form-control"
+										id="dateOfIdentification" value="2023-01-02" readonly>
+								</div>
+								<div class="mb-3">
+									<label for="description" class="form-label">Description</label>
+									<textarea class="form-control" id="description" rows="3"
+										readonly>This is a dummy description of the deviation explaining the issue in detail.</textarea>
+								</div>
+								<div class="mb-3">
+									<label for="reviewComments" class="form-label">Review
+										Comments</label>
+									<textarea class="form-control" id="reviewComments" rows="3"
+										required></textarea>
+								</div>
+								<div class="mb-3">
+									<label for="decision" class="form-label">Decision</label> <select
+										class="form-select" id="decision" required
+										onchange="showJustificationInput()">
+										<option value="">Choose...</option>
+										<option value="Approve">Approve</option>
+										<option value="Need More Info">Need More Info</option>
+										<option value="Reject">Reject</option>
+									</select>
+								</div>
+								<div class="mb-3 d-none" id="justificationWrapper">
+									<label for="justificationForDecision" class="form-label">Justification
+										for Decision</label>
+									<textarea class="form-control" id="justificationForDecision"
+										rows="3"></textarea>
+								</div>
+								<button type="submit" class="btn btn-primary">Submit
+									Review</button>
+							</form>
+						</div>
+					</div>
 
-<script>
-    document.getElementById("departmental-review-form").addEventListener("submit", function(event) {
-        var decision = document.getElementById("decision").value;
-        var justificationInput = document.getElementById("justificationForDecision");
+					<script>
+						document
+								.getElementById("departmental-review-form")
+								.addEventListener(
+										"submit",
+										function(event) {
+											var decision = document
+													.getElementById("decision").value;
+											var justificationInput = document
+													.getElementById("justificationForDecision");
 
-        // Check if justification is required and if it's filled
-        if (decision === "Need More Info" || decision === "Reject") {
-            if (!justificationInput.value.trim()) {
-                alert('Justification for decision is required when rejecting or needing more info.');
-                event.preventDefault();
-            }
-        }
-    });
+											// Check if justification is required and if it's filled
+											if (decision === "Need More Info"
+													|| decision === "Reject") {
+												if (!justificationInput.value
+														.trim()) {
+													alert('Justification for decision is required when rejecting or needing more info.');
+													event.preventDefault();
+												}
+											}
+										});
 
-    function showJustificationInput() {
-        var decision = document.getElementById("decision").value;
-        var justificationWrapper = document.getElementById("justificationWrapper");
-        if (decision === "Need More Info" || decision === "Reject") {
-            justificationWrapper.classList.remove('d-none');
-            document.getElementById("justificationForDecision").required = true;
-        } else {
-            justificationWrapper.classList.add('d-none');
-            document.getElementById("justificationForDecision").required = false;
-        }
-    }
-</script>
+						function showJustificationInput() {
+							var decision = document.getElementById("decision").value;
+							var justificationWrapper = document
+									.getElementById("justificationWrapper");
+							if (decision === "Need More Info"
+									|| decision === "Reject") {
+								justificationWrapper.classList.remove('d-none');
+								document
+										.getElementById("justificationForDecision").required = true;
+							} else {
+								justificationWrapper.classList.add('d-none');
+								document
+										.getElementById("justificationForDecision").required = false;
+							}
+						}
+					</script>
 
 
 
@@ -172,16 +195,9 @@
 		<div class="dark-transparent sidebartoggler"></div>
 	</div>
 	<!-- Import Js Files -->
-	
-	<script>
-			$(document).ready(function() {
 
-			});
-			
-			
 
-		</script>
-
+	<script src="/assets/js/base.js"></script>
 	<script src="/assets/js/app.min.js"></script>
 	<script src="/assets/js/app.init.js"></script>
 	<script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

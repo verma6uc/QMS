@@ -157,7 +157,7 @@ if (request.getSession().getAttribute("user") != null) {
 						<img src="/assets/images/profile/default_profile_image.jpg" width="45"
 							height="45" class="img-fluid rounded-circle" alt="" />
 						<div>
-							<h5 class="mb-1"><%=user.getUsername()%></h5>
+							<h5 class="mb-1 text-truncate" style="max-width: 100px;"><%=user.getUsername()%></h5>
 							
 						</div>
 					</div>

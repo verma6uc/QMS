@@ -86,96 +86,166 @@
 					</div>
 
 					<!-- Key Metrics -->
-	 <div class="card">
-    <div class="card-header">Evaluation of Deviation by Head - QA/Designee</div>
+	  <div class="card">
+    <div class="card-header">QA Deviation Risk Assessment</div>
     <div class="card-body">
+        <h5 class="card-title">Evaluate Deviation Risks</h5>
+        <p class="card-text">
+            Please fill out the assessment form to evaluate the risks associated with the deviation.
+        </p>
         <form action="/action?widgetId=WIDGET_ID" method="post">
-            <!-- Status Report from All Previous Menus -->
-            <div class="mb-3">
-                <label class="form-label">Status Report from All Previous Menus:</label>
-                <textarea class="form-control" rows="5" readonly>Here comes data gathered from SQL query fetching all details including initiator details, review notes, and audit trails.</textarea>
-            </div>
+            <!-- Hidden Deviation ID, auto-populated -->
+            <input type="hidden" id="deviation_id" name="deviation_id">
 
-            <!-- Initiator and Reviewer Audit Trail -->
+            <!-- Probability of Recurrence -->
             <div class="mb-3">
-                <label class="form-label">Initiator and Reviewer Audit Trail:</label>
-                <textarea class="form-control" rows="5" readonly>Here comes data for audit trail including comments, decisions, and timestamps from respective users.</textarea>
-            </div>
-
-            <!-- Risk Matrix Scoring Table -->
-            <h5 class="card-title">Risk Matrix Scoring</h5>
-            <label for="ProbabilityOfRecurrence" class="form-label">Probability of Recurrence:</label>
-            <select class="form-select" id="ProbabilityOfRecurrence" required>
-                <option value="">Select a score...</option>
-                <option value="5">Almost certain (5)</option>
-                <option value="4">Likely (4)</option>
-                <option value="3">Possible (3)</option>
-                <option value="2">Unlikely (2)</option>
-                <option value="1">Rare (1)</option>
-            </select>
-            <div class="mb-3">
-                <label for="ProbabilityJustification" class="form-label">Justification:</label>
-                <textarea class="form-control" id="ProbabilityJustification" maxlength="5000" placeholder="Enter your justification..." required></textarea>
+                <label for="probability_of_recurrence" class="form-label">Probability of Recurrence</label>
+                <select class="form-select" id="probability_of_recurrence" name="probability_of_recurrence" required>
+                    <option value="">Select Probability</option>
+                    <option value="5">Almost certain (5)</option>
+                    <option value="4">Likely (4)</option>
+                    <option value="3">Possible (3)</option>
+                    <option value="2">Unlikely (2)</option>
+                    <option value="1">Rare (1)</option>
+                </select>
+                <div class="form-text">Justification for selected probability.</div>
+                <textarea class="form-control" name="probability_justification" maxlength="5000" required></textarea>
             </div>
 
             <!-- Additional Processing Steps -->
             <div class="mb-3">
-                <label class="form-label">Additional Processing Steps Required:</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="AdditionalProcessingSteps" id="AdditionalProcessingStepsYes" value="Yes">
-                    <label class="form-check-label" for="AdditionalProcessingStepsYes">Yes</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="AdditionalProcessingSteps" id="AdditionalProcessingStepsNo" value="No" checked>
-                    <label class="form-check-label" for="AdditionalProcessingStepsNo">No</label>
-                </div>
-            </div>
-
-            <!-- Deviation Closure Date Calculation -->
-            <div class="mb-3">
-                <label class="form-label">Deviation Closure Date (Calculated):</label>
-                <input type="text" class="form-control" readonly placeholder="Calculated closure date based on risk categorization">
-            </div>
-
-            <!-- Is Deviation Repeated -->
-            <div class="mb-3">
-                <label class="form-label">Is this deviation repeated?</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="DeviationRepeated" id="DeviationRepeatedYes" value="Yes">
-                    <label class="form-check-label" for="DeviationRepeatedYes">Yes</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="DeviationRepeated" id="DeviationRepeatedNo" value="No" checked>
-                    <label class="form-check-label" for="DeviationRepeatedNo">No</label>
-                </div>
-            </div>
-
-            <!-- Conditional Fields for Repeated Deviation -->
-            <div class="mb-3 d-none" id="DetailsForRepeatedDeviation">
-                <label for="DescriptionOfRiskAssessment" class="form-label">Description of Risk Assessment:</label>
-                <textarea class="form-control" id="DescriptionOfRiskAssessment" required></textarea>
-                <label for="AccountabilityUserDepartment" class="form-label">Accountability User Department:</label>
-                <select class="form-select" id="AccountabilityUserDepartment" data-sql="SELECT department_name FROM departments;">
+                <label for="additional_processing_steps" class="form-label">Additional Processing Steps</label>
+                <select class="form-select" id="additional_processing_steps" name="additional_processing_steps" required>
+                    <option value="">Select Option</option>
+                    <option value="1">Yes (1)</option>
+                    <option value="0">No (0)</option>
                 </select>
-                <label for="TargetClosureDate" class="form-label">Target Closure Date:</label>
-                <input type="date" class="form-control" id="TargetClosureDate" required>
+                <div class="form-text">Justification for additional processing steps.</div>
+                <textarea class="form-control" name="steps_justification" maxlength="5000" required></textarea>
             </div>
 
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary mt-3">Submit Evaluation</button>
+            <!-- Microbiologically Related -->
+            <div class="mb-3">
+                <label for="microbiologically_related" class="form-label">Microbiologically Related</label>
+                <select class="form-select" id="microbiologically_related" name="microbiologically_related" required>
+                    <option value="">Select Option</option>
+                    <option value="4">Yes (4)</option>
+                    <option value="0">No (0)</option>
+                </select>
+                <div class="form-text">Justification for microbiological relation.</div>
+                <textarea class="form-control" name="microbiologically_related_justification" maxlength="5000" required></textarea>
+            </div>
+
+            <!-- Product Cross Contamination -->
+            <div class="mb-3">
+                <label for="product_cross_contamination" class="form-label">Product Cross Contamination</label>
+                <select class="form-select" id="product_cross_contamination" name="product_cross_contamination" required>
+                    <option value="">Select Option</option>
+                    <option value="9">Yes (9)</option>
+                    <option value="0">No (0)</option>
+                </select>
+                <div class="form-text">Justification for product cross contamination.</div>
+                <textarea class="form-control" name="contamination_justification" maxlength="5000" required></textarea>
+            </div>
+
+            <!-- Product Impact -->
+            <div class="mb-3">
+                <label for="product_impact" class="form-label">Product Impact</label>
+                <select class="form-select" id="product_impact" name="product_impact" required>
+                    <option value="">Select Impact Level</option>
+                    <option value="10">Severe (10)</option>
+                    <option value="4">Major (4)</option>
+                    <option value="3">Medium (3)</option>
+                    <option value="2">Minor (2)</option>
+                    <option value="1">Negligible (1)</option>
+                </select>
+                <div class="form-text">Justification for product impact.</div>
+                <textarea class="form-control" name="impact_justification" maxlength="5000" required></textarea>
+            </div>
+
+            <!-- Complexity of Investigation -->
+            <div class="mb-3">
+                <label for="complexity_of_investigation" class="form-label">Complexity of Investigation</label>
+                <select class="form-select" id="complexity_of_investigation" name="complexity_of_investigation" required>
+                    <option value="">Select Complexity</option>
+                    <option value="2">High (2)</option>
+                    <option value="1">Medium (1)</option>
+                    <option value="0">Low (0)</option>
+                </select>
+                <div class="form-text">Justification for complexity of investigation.</div>
+                <textarea class="form-control" name="complexity_justification" maxlength="5000" required></textarea>
+            </div>
+
+            <!-- Critical Warranted by Quality -->
+            <div class="mb-3">
+                <label for="critical_warranted_by_quality" class="form-label">Critical Warranted by Quality</label>
+                <select class="form-select" id="critical_warranted_by_quality" name="critical_warranted_by_quality" required>
+                    <option value="">Select Option</option>
+                    <option value="10">Yes (10)</option>
+                    <option value="0">No (0)</option>
+                </select>
+                <div class="form-text">Justification for criticality by quality.</div>
+                <textarea class="form-control" name="critical_justification" maxlength="5000" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Assessment</button>
         </form>
     </div>
 </div>
 
 <script>
-document.getElementById('DeviationRepeatedYes').addEventListener('change', function() {
-    document.getElementById('DetailsForRepeatedDeviation').classList.remove('d-none');
-});
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.querySelector('form');
 
-document.getElementById('DeviationRepeatedNo').addEventListener('change', function() {
-    document.getElementById('DetailsForRepeatedDeviation').classList.add('d-none');
+    // Function to handle form submission
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Validate form inputs
+        if (!validateForm()) {
+            alert('Please fill all the required fields correctly.');
+            return;
+        }
+
+        // Construct the form data
+        const formData = new FormData(form);
+
+        // Example: Log the form data to the console (for demonstration)
+        // In a real application, you would send this to the server
+        for(let [name, value] of formData) {
+            console.log(`${name}: ${value}`);
+        }
+
+        // Optionally, send the data to the server using `fetch` or `XMLHttpRequest`
+        // fetch('/action?widgetId=WIDGET_ID', {
+        //     method: 'POST',
+        //     body: formData
+        // }).then(response => response.json())
+        //   .then(data => console.log(data))
+        //   .catch(error => console.error('Error:', error));
+
+        alert('Form submitted successfully (check console for output).');
+    });
+
+    // Function to validate all required fields
+    function validateForm() {
+        const requiredInputs = document.querySelectorAll('[required]');
+
+        for (let input of requiredInputs) {
+            if (input.type === 'select-one' && input.value === '') {
+                return false;
+            }
+
+            if (input.type === 'textarea' && input.value.trim() === '') {
+                return false;
+            }
+        }
+
+        return true;
+    }
 });
 </script>
+	  
 
 				</div>
 			</div>

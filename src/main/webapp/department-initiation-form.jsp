@@ -86,94 +86,155 @@
 					</div>
 
 					<!-- Key Metrics -->
-			 <div class="card">
-    <div class="card-header">Deviation Initiation Form</div>
+<div class="card">
+    <div class="card-header">Deviation Initiation</div>
     <div class="card-body">
-        <h5 class="card-title">Please provide the necessary information to initiate a deviation report.</h5>
+        <h5 class="card-title">Initiate a Deviation Report</h5>
         <p class="card-text">
-            Fill out the form below to report a new deviation. All fields marked with an asterisk (*) are required.
+            Please fill out the form below to report a new deviation. Provide all relevant details to ensure effective handling of the deviation.
         </p>
-        <form action="/action?widgetId=WIDGET_ID" method="post" id="deviationForm">
+        <form action="/action?widgetId=WIDGET_ID" method="post">
             <div class="mb-3">
-                <label for="department" class="form-label">Initiating Department <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="department" name="department" readonly>
+                <label for="dateOfOccurrence" class="form-label">Date of Occurrence</label>
+                <input type="date" class="form-control" id="dateOfOccurrence" name="date_of_occurrence" max="" required>
             </div>
             <div class="mb-3">
-                <label for="dateOfOccurrence" class="form-label">Date of Occurrence <span class="text-danger">*</span></label>
-                <input type="date" class="form-control" id="dateOfOccurrence" name="dateOfOccurrence" required>
+                <label for="dateOfIdentification" class="form-label">Date of Identification</label>
+                <input type="date" class="form-control" id="dateOfIdentification" name="date_of_identification" required>
             </div>
             <div class="mb-3">
-                <label for="dateOfIdentification" class="form-label">Date of Identification <span class="text-danger">*</span></label>
-                <input type="date" class="form-control" id="dateOfIdentification" name="dateOfIdentification" required>
+                <label for="timeOfIdentification" class="form-label">Time of Identification</label>
+                <input type="time" class="form-control" id="timeOfIdentification" name="time_of_identification" required>
+            </div>
+            <div class="mb-3" id="justificationForDelayContainer" style="display: none;">
+                <label for="justificationForDelay" class="form-label">Justification for Delay in Log-in</label>
+                <textarea class="form-control" id="justificationForDelay" name="justification_for_delay" rows="3" maxlength="5000" ></textarea>
             </div>
             <div class="mb-3">
-                <label for="timeOfIdentification" class="form-label">Time of Identification <span class="text-danger">*</span></label>
-                <input type="time" class="form-control" id="timeOfIdentification" name="timeOfIdentification" required>
-            </div>
-            <div class="mb-3">
-                <label for="eventRelatedTo" class="form-label">Event Related To <span class="text-danger">*</span></label>
-                <select class="form-control select2" id="eventRelatedTo" name="eventRelatedTo" required data-sql="SELECT event_type FROM event_types">
-                    <option value="">Select an Event Type</option>
+                <label for="eventRelatedTo" class="form-label">Event Related To</label>
+                <select class="form-select" id="eventRelatedTo" name="event_related_type" required>
+                    <option value="">Select an option</option>
+                    <option value="PRODUCT">Product</option>
+                    <option value="MATERIAL">Material</option>
+                    <option value="EQUIPMENT">Equipment</option>
+                    <option value="DOCUMENT">Document</option>
+                    <option value="OTHERS">Others</option>
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description of the Deviation/Incident <span class="text-danger">*</span></label>
-                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            <!-- Event Specific Conditional Fields -->
+            <div class="event-specific-fields" >
+                <div class="mb-3" id="productDetails" style="display: none;">
+                    <label for="product" class="form-label">Product</label>
+                    <select class="form-select " id="product" name="product_id" data-sql="SELECT id, name FROM products;" ></select>
+                    <label for="batches" class="form-label">Batches</label>
+                    <select class="form-select " id="batches" name="batch_id" data-sql="SELECT id, batch_number as name FROM batches" multiple></select>
+                </div>
+                <div class="mb-3" id="materialDetails" style="display: none;">
+                    <label for="material" class="form-label">Material</label>
+                    <select class="form-select select2" id="material" name="material_id" data-sql="SELECT id, name FROM materials;" ></select>
+                    <label for="lotNumbers" class="form-label">Lot Numbers</label>
+                    <input type="text" class="form-control" id="lotNumbers" name="lot_number"  pattern="^[a-zA-Z0-9, ]+$">
+                </div>
+                <div class="mb-3" id="equipmentDetails" style="display: none;">
+                    <label for="equipment" class="form-label">Equipment</label>
+                    <select class="form-select select2" id="equipment" name="equipment_id" data-sql="SELECT id, name FROM equipments;" ></select>
+                </div>
+                <div class="mb-3" id="documentDetails" style="display: none;">
+                    <label for="document" class="form-label">Document</label>
+                    <select class="form-select select2" id="document" name="document_id" data-sql="SELECT id, name FROM documents;" ></select>
+                </div>
+                <div class="mb-3" id="otherDetails" style="display: none;">
+                    <label for="otherDetailsText" class="form-label">Other Details</label>
+                    <input type="text" class="form-control" id="otherDetailsText" name="other_details"  maxlength="5000">
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit Report</button>
+            <!-- Description and Actions -->
+            <div class="mb-3">
+                <label for="description" class="form-label">Description of the Deviation/Incident</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required maxlength="5000"></textarea>
+            </div>
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Submit Deviation</button>
         </form>
     </div>
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // Populate Department based on User Session
-    fetch('/get-user-department')
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('department').value = data.department;
+    const dateOfOccurrence = document.getElementById('dateOfOccurrence');
+    const dateOfIdentification = document.getElementById('dateOfIdentification');
+    const timeOfIdentification = document.getElementById('timeOfIdentification');
+    const justificationForDelayContainer = document.getElementById('justificationForDelayContainer');
+    const eventRelatedTo = document.getElementById('eventRelatedTo');
+
+    // Limit date inputs to not allow future dates
+    const today = new Date().toISOString().split('T')[0];
+    dateOfOccurrence.max = today;
+    dateOfIdentification.max = today;
+
+    dateOfOccurrence.addEventListener('change', function() {
+        // Make sure that the date of identification is not before the date of occurrence
+        dateOfIdentification.min = dateOfOccurrence.value;
     });
 
-    // Initializing select2 with data from SQL if available or from data attribute
-    $('.select2').each(function() {
-        var select = $(this);
-        var sql = select.data('sql');
-        if (sql) {
-            $.ajax({
-                url: '/get-select-data',
-                type: 'POST',
-                data: { sql: sql },
-                success: function(data) {
-                    data.forEach(function(item) {
-                        var newOption = new Option(item.text, item.id, false, false);
-                        select.append(newOption).trigger('change');
-                    });
-                }
-            });
+ 
+
+    function updateJustificationVisibility() {
+        const identDate = new Date(dateOfIdentification.value);
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);  // Reset hours to start of the day for consistent comparison
+        identDate.setHours(0, 0, 0, 0);
+
+        // Calculate the difference in days
+        const timeDiff = currentDate - identDate;
+        const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
+
+        if (daysDiff > 1) {
+            justificationForDelayContainer.style.display = 'block';
+            justificationForDelay.required = true;
+        } else {
+            justificationForDelayContainer.style.display = 'none';
+            justificationForDelay.required = false; // Prevent validation on hidden field
+        }
+    }
+
+    dateOfIdentification.addEventListener('change', updateJustificationVisibility);
+    // Event related selector's dynamic field display
+    eventRelatedTo.addEventListener('change', function() {
+         hideAllEventSpecificFields();
+        switch (eventRelatedTo.value) {
+            case 'PRODUCT':
+                document.getElementById('productDetails').style.display = 'block';
+                break;
+            case 'MATERIAL':
+                document.getElementById('materialDetails').style.display = 'block';
+                break;
+            case 'EQUIPMENT':
+                document.getElementById('equipmentDetails').style.display = 'block';
+                break;
+            case 'DOCUMENT':
+                document.getElementById('documentDetails').style.display = 'block';
+                break;
+            case 'OTHERS':
+                document.getElementById('otherDetails').style.display = 'block';
+                break;
         }
     });
 
-    // Form Submission Validation
-    $('#deviationForm').submit(function(e) {
-        var isValid = true;
-        $(this).find('[required]').each(function() {
-            if ($(this).is(':invalid') || !$(this).val()) {
-                isValid = false;
-                $(this).addClass('is-invalid');
-            } else {
-                $(this).removeClass('is-invalid');
-            }
-        });
+    function hideAllEventSpecificFields() {
+        document.getElementById('productDetails').style.display = 'none';
+        document.getElementById('materialDetails').style.display = 'none';
+        document.getElementById('equipmentDetails').style.display = 'none';
+        document.getElementById('documentDetails').style.display = 'none';
+        document.getElementById('otherDetails').style.display = 'none';
+    }
 
-        if (!isValid) {
-            e.preventDefault(); // Prevent form submission if validation fails
-        }
-    });
+   
+
+   
 });
 </script>
-
-
-
+ 
 				</div>
 			</div>
 			<script>
@@ -189,15 +250,9 @@ document.addEventListener("DOMContentLoaded", function() {
 	</div>
 	<!-- Import Js Files -->
 	
-	<script>
-			$(document).ready(function() {
+	
 
-			});
-			
-			
-
-		</script>
-
+	<script src="/assets/js/base.js"></script>
 	<script src="/assets/js/app.min.js"></script>
 	<script src="/assets/js/app.init.js"></script>
 	<script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -214,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		src="/assets/libs/jquery-validation/dist/jquery.validate.min.js"></script>
 
 	<script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-
+ <script src="/assets/libs/select2/dist/js/select2.min.js"></script>
 </body>
 
 </html>

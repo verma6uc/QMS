@@ -14,10 +14,9 @@ public class DeviationInitiateDTO {
     private Integer productId; // Assuming 'id' from the database is of type integer.
     private List<Integer> batchIds; // Assumes multiple batch ids can be selected.
     private Integer materialId;
-    private String lotNumber; // Assuming it's a comma-separated list if multiple.
+    private String lotNumber;
     private Integer equipmentId;
     private Integer documentId;
-    private String otherDetails;
 
     private String description;
 
@@ -109,14 +108,6 @@ public class DeviationInitiateDTO {
 
     public void setDocumentId(Integer documentId) {
         this.documentId = documentId;
-    }
-
-    public String getOtherDetails() {
-        return otherDetails;
-    }
-
-    public void setOtherDetails(String otherDetails) {
-        this.otherDetails = otherDetails;
     }
 
     public String getDescription() {

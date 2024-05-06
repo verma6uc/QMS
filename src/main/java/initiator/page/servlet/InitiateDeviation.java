@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 
 import dao.DeviationDAO;
 import dto.DeviationInitiateDTO;
+import model.User;
 
 @WebServlet("/initiateDeviation")
 public class InitiateDeviation extends HttpServlet {
@@ -26,7 +27,14 @@ public class InitiateDeviation extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	deviationDAO=new DeviationDAO();
+    	
+    	User user = null;
 
+    	if (request.getSession().getAttribute("user") != null) {
+    		user = (User) request.getSession().getAttribute("user");
+    	}
+    	
         // 1. Retrieve form data
         String dateOfOccurrence = request.getParameter("dateOfOccurrence");
         String dateOfIdentification = request.getParameter("dateOfIdentification");
@@ -52,7 +60,7 @@ public class InitiateDeviation extends HttpServlet {
         dto.setJustificationForDelay(justificationForDelay);
         dto.setEventRelatedType(eventRelatedType);
         dto.setDescription(description);
-
+        dto.setInitiatedByUserId(user.getId());
         // ... (Populate other DTO fields based on eventRelatedType) ...
 
         switch (eventRelatedType) {
@@ -90,6 +98,7 @@ public class InitiateDeviation extends HttpServlet {
         }
 
         // 4. Call DAO method to initiate deviation
+        
         try {
             deviationDAO.initiateDeviation(dto);
 

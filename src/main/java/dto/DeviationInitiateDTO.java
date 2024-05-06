@@ -4,117 +4,128 @@ import java.util.List;
 
 public class DeviationInitiateDTO {
 
-    private String dateOfOccurrence; // Using String to represent date since formatting on the DTO level varies and often handled on service or controller level.
-    private String dateOfIdentification;
-    private String timeOfIdentification;
-    private String justificationForDelay;
-    private String eventRelatedType;
-    
-    // Event-specific details
-    private Integer productId; // Assuming 'id' from the database is of type integer.
-    private List<Integer> batchIds; // Assumes multiple batch ids can be selected.
-    private Integer materialId;
-    private String lotNumber;
-    private Integer equipmentId;
-    private Integer documentId;
+	private String dateOfOccurrence; // Using String to represent date since formatting on the DTO level varies and
+										// often handled on service or controller level.
+	private String dateOfIdentification;
+	private String timeOfIdentification;
+	private String justificationForDelay;
+	private String eventRelatedType;
+	private Integer initiatedByUserId;
 
-    private String description;
+	// Event-specific details
+	private Integer productId; // Assuming 'id' from the database is of type integer.
+	private List<Integer> batchIds; // Assumes multiple batch ids can be selected.
+	private Integer materialId;
+	private String lotNumber;
+	private Integer equipmentId;
+	private Integer documentId;
 
-    // Getters and setters for all fields.
+	private String description;
 
-    public String getDateOfOccurrence() {
-        return dateOfOccurrence;
-    }
+	// Getters and setters for all fields.
 
-    public void setDateOfOccurrence(String dateOfOccurrence) {
-        this.dateOfOccurrence = dateOfOccurrence;
-    }
+	public String getDateOfOccurrence() {
+		return dateOfOccurrence;
+	}
 
-    public String getDateOfIdentification() {
-        return dateOfIdentification;
-    }
+	public void setDateOfOccurrence(String dateOfOccurrence) {
+		this.dateOfOccurrence = dateOfOccurrence;
+	}
 
-    public void setDateOfIdentification(String dateOfIdentification) {
-        this.dateOfIdentification = dateOfIdentification;
-    }
+	public String getDateOfIdentification() {
+		return dateOfIdentification;
+	}
 
-    public String getTimeOfIdentification() {
-        return timeOfIdentification;
-    }
+	public void setDateOfIdentification(String dateOfIdentification) {
+		this.dateOfIdentification = dateOfIdentification;
+	}
 
-    public void setTimeOfIdentification(String timeOfIdentification) {
-        this.timeOfIdentification = timeOfIdentification;
-    }
+	public String getTimeOfIdentification() {
+		return timeOfIdentification;
+	}
 
-    public String getJustificationForDelay() {
-        return justificationForDelay;
-    }
+	public void setTimeOfIdentification(String timeOfIdentification) {
+		this.timeOfIdentification = timeOfIdentification;
+	}
 
-    public void setJustificationForDelay(String justificationForDelay) {
-        this.justificationForDelay = justificationForDelay;
-    }
+	public String getJustificationForDelay() {
+		return justificationForDelay;
+	}
 
-    public String getEventRelatedType() {
-        return eventRelatedType;
-    }
+	public void setJustificationForDelay(String justificationForDelay) {
+		this.justificationForDelay = justificationForDelay;
+	}
 
-    public void setEventRelatedType(String eventRelatedType) {
-        this.eventRelatedType = eventRelatedType;
-    }
+	public String getEventRelatedType() {
+		return eventRelatedType;
+	}
 
-    public Integer getProductId() {
-        return productId;
-    }
+	public void setEventRelatedType(String eventRelatedType) {
+		this.eventRelatedType = eventRelatedType;
+	}
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
+	public Integer getProductId() {
+		return productId;
+	}
 
-    public List<Integer> getBatchIds() {
-        return batchIds;
-    }
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
 
-    public void setBatchIds(List<Integer> batchIds) {
-        this.batchIds = batchIds;
-    }
+	public List<Integer> getBatchIds() {
+		return batchIds;
+	}
 
-    public Integer getMaterialId() {
-        return materialId;
-    }
+	public void setBatchIds(List<Integer> batchIds) {
+		this.batchIds = batchIds;
+	}
 
-    public void setMaterialId(Integer materialId) {
-        this.materialId = materialId;
-    }
+	public Integer getMaterialId() {
+		return materialId;
+	}
 
-    public String getLotNumber() {
-        return lotNumber;
-    }
+	public void setMaterialId(Integer materialId) {
+		this.materialId = materialId;
+	}
 
-    public void setLotNumber(String lotNumber) {
-        this.lotNumber = lotNumber;
-    }
+	public String getLotNumber() {
+		return lotNumber;
+	}
 
-    public Integer getEquipmentId() {
-        return equipmentId;
-    }
+	public void setLotNumber(String lotNumber) {
+		this.lotNumber = lotNumber;
+	}
 
-    public void setEquipmentId(Integer equipmentId) {
-        this.equipmentId = equipmentId;
-    }
+	public Integer getEquipmentId() {
+		return equipmentId;
+	}
 
-    public Integer getDocumentId() {
-        return documentId;
-    }
+	public void setEquipmentId(Integer equipmentId) {
+		this.equipmentId = equipmentId;
+	}
 
-    public void setDocumentId(Integer documentId) {
-        this.documentId = documentId;
-    }
+	public Integer getDocumentId() {
+		return documentId;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setDocumentId(Integer documentId) {
+		this.documentId = documentId;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Integer getInitiatedByUserId() {
+		return initiatedByUserId;
+	}
+
+	public void setInitiatedByUserId(Integer initiatedByUserId) {
+		this.initiatedByUserId = initiatedByUserId;
+	}
+
 }

@@ -188,17 +188,33 @@ public class DeviationDAO {
 	private int insertDeviationRecord(DeviationInitiateDTO dto) throws SQLException {
 		Connection conn = DatabaseUtility.connect();
 		String sql = "INSERT INTO deviations (date_of_occurrence, date_of_identification, time_of_identification, "
-				+ "justification_for_delay, event_related_type, description) VALUES (?, ?, ?, ?, ?::event_related_enum, ?) RETURNING id"; // Assuming																																// key
+				+ "justification_for_delay, event_related_type, description,initiated_by_user_id) VALUES (?, ?, ?, ?, ?::event_related_enum, ?,?) RETURNING id"; // Assuming
+		// //
+		// key
 
 		try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 			// Set parameters using dto.get...() and handle potential null values
-			stmt.setString(1, dto.getDateOfOccurrence());
-			stmt.setString(2, dto.getDateOfIdentification());
-			stmt.setString(3, dto.getTimeOfIdentification());
+			java.sql.Date sqlDateOfOccurrence = java.sql.Date.valueOf(dto.getDateOfOccurrence());
+			java.sql.Date sqlDateOfIdentification = java.sql.Date.valueOf(dto.getDateOfIdentification());
+
+			// Ensure time string is in the format HH:mm:ss
+			String timeOfIdentification = dto.getTimeOfIdentification();
+			if (!timeOfIdentification.contains(":")) {
+				throw new IllegalArgumentException("Time must be in the format HH:mm:ss");
+			}
+			if (timeOfIdentification.length() == 5) { // HH:mm
+				timeOfIdentification += ":00"; // Assume 00 seconds if not specified
+			}
+
+			java.sql.Time sqlTimeOfIdentification = java.sql.Time.valueOf(timeOfIdentification);
+
+			stmt.setDate(1, sqlDateOfOccurrence);
+			stmt.setDate(2, sqlDateOfIdentification);
+			stmt.setTime(3, sqlTimeOfIdentification);
 			stmt.setString(4, dto.getJustificationForDelay());
 			stmt.setString(5, dto.getEventRelatedType());
 			stmt.setString(6, dto.getDescription());
-
+			stmt.setInt(7, dto.getInitiatedByUserId());
 			// Execute and retrieve the generated deviationId
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {

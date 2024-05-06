@@ -93,26 +93,26 @@
         <p class="card-text">
             Please fill out the form below to report a new deviation. Provide all relevant details to ensure effective handling of the deviation.
         </p>
-        <form action="/action?widgetId=WIDGET_ID" method="post">
+        <form action="/initiateDeviation" method="post">
             <div class="mb-3">
                 <label for="dateOfOccurrence" class="form-label">Date of Occurrence</label>
-                <input type="date" class="form-control" id="dateOfOccurrence" name="date_of_occurrence" max="" required>
+                <input type="date" class="form-control" id="dateOfOccurrence" name="dateOfOccurrence" max="" required>
             </div>
             <div class="mb-3">
                 <label for="dateOfIdentification" class="form-label">Date of Identification</label>
-                <input type="date" class="form-control" id="dateOfIdentification" name="date_of_identification" required>
+                <input type="date" class="form-control" id="dateOfIdentification" name="dateOfIdentification" required>
             </div>
             <div class="mb-3">
                 <label for="timeOfIdentification" class="form-label">Time of Identification</label>
-                <input type="time" class="form-control" id="timeOfIdentification" name="time_of_identification" required>
+                <input type="time" class="form-control" id="timeOfIdentification" name="timeOfIdentification" required>
             </div>
             <div class="mb-3" id="justificationForDelayContainer" style="display: none;">
                 <label for="justificationForDelay" class="form-label">Justification for Delay in Log-in</label>
-                <textarea class="form-control" id="justificationForDelay" name="justification_for_delay" rows="3" maxlength="5000" ></textarea>
+                <textarea class="form-control" id="justificationForDelay" name="justificationForDelay" rows="3" maxlength="5000" ></textarea>
             </div>
             <div class="mb-3">
                 <label for="eventRelatedTo" class="form-label">Event Related To</label>
-                <select class="form-select" id="eventRelatedTo" name="event_related_type" required>
+                <select class="form-select" id="eventRelatedTo" name="eventRelatedTo" required>
                     <option value="">Select an option</option>
                     <option value="PRODUCT">Product</option>
                     <option value="MATERIAL">Material</option>
@@ -125,23 +125,23 @@
             <div class="event-specific-fields" >
                 <div class="mb-3" id="productDetails" style="display: none;">
                     <label for="product" class="form-label">Product</label>
-                    <select class="form-select " id="product" name="product_id" data-sql="SELECT id, name FROM products;" ></select>
+                    <select class="form-select " id="product" name="productId" data-sql="SELECT id, name FROM products;" ></select>
                     <label for="batches" class="form-label">Batches</label>
-                    <select class="form-select " id="batches" name="batch_id" data-sql="SELECT id, batch_number as name FROM batches" multiple></select>
+                    <select class="form-select " id="batches" name="batchIds" data-sql="SELECT id, batch_number as name FROM batches" multiple></select>
                 </div>
                 <div class="mb-3" id="materialDetails" style="display: none;">
                     <label for="material" class="form-label">Material</label>
-                    <select class="form-select select2" id="material" name="material_id" data-sql="SELECT id, name FROM materials;" ></select>
+                    <select class="form-select select2" id="material" name="materialId" data-sql="SELECT id, name FROM materials;" ></select>
                     <label for="lotNumbers" class="form-label">Lot Numbers</label>
-                    <input type="text" class="form-control" id="lotNumbers" name="lot_number"  pattern="^[a-zA-Z0-9, ]+$">
+                    <input type="text" class="form-control" id="lotNumbers" name="lotNumber"  pattern="^[a-zA-Z0-9, ]+$">
                 </div>
                 <div class="mb-3" id="equipmentDetails" style="display: none;">
                     <label for="equipment" class="form-label">Equipment</label>
-                    <select class="form-select select2" id="equipment" name="equipment_id" data-sql="SELECT id, name FROM equipments;" ></select>
+                    <select class="form-select select2" id="equipment" name="equipmentId" data-sql="SELECT id, name FROM equipments;" ></select>
                 </div>
                 <div class="mb-3" id="documentDetails" style="display: none;">
                     <label for="document" class="form-label">Document</label>
-                    <select class="form-select select2" id="document" name="document_id" data-sql="SELECT id, name FROM documents;" ></select>
+                    <select class="form-select select2" id="document" name="documentId" data-sql="SELECT id, name FROM documents;" ></select>
                 </div>
                 <div class="mb-3" id="otherDetails" style="display: none;">
                     <label for="otherDetailsText" class="form-label">Other Details</label>

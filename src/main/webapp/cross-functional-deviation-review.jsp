@@ -105,7 +105,7 @@
 
             <div class="mb-3 d-none" id="departmentSelection">
                 <label for="department" class="form-label">Department:</label>
-                <select class="form-select" id="department" name="department" onchange="loadUsersAndGroups()" required>
+                <select class="form-select" id="department" name="department" data-sql="select id,name from departments d " required>
                     <!-- Dynamically populated -->
                 </select>
             </div>
@@ -163,25 +163,7 @@ function toggleJustification() {
     }
 }
 
-function loadUsersAndGroups() {
-    const departmentId = document.getElementById('department').value;
-    // Load Users and Groups based on selected department
 
-    // Mock AJAX request to fetch data
-    console.log('Loading users for department ' + departmentId);
-
-    // Suppose the following data comes from AJAX
-    const usersData = [{id: 1, username: 'User1'}, {id: 2, username: 'User2'}];
-    
-    const userGroupSelect = document.getElementById('userGroup');
-    userGroupSelect.innerHTML = '';  // Clear existing options
-    usersData.forEach(user => {
-        const option = document.createElement('option');
-        option.value = user.id;
-        option.text = user.username;
-        userGroupSelect.appendChild(option);
-    });
-}
 </script>
 
 				</div>
@@ -208,6 +190,7 @@ function loadUsersAndGroups() {
 
 		</script>
 
+	<script src="/assets/js/base.js"></script>
 	<script src="/assets/js/app.min.js"></script>
 	<script src="/assets/js/app.init.js"></script>
 	<script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -224,6 +207,8 @@ function loadUsersAndGroups() {
 		src="/assets/libs/jquery-validation/dist/jquery.validate.min.js"></script>
 
 	<script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+	 <script src="/assets/libs/select2/dist/js/select2.min.js"></script>
+	
 
 </body>
 

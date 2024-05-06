@@ -16,4 +16,6 @@
   
    <link rel="stylesheet" href="/assets/libs/sweetalert2/dist/sweetalert2.min.css">
      <link rel="stylesheet" href="/assets/libs/select2/dist/css/select2.min.css">
+     <script src="/assets/js/plugins/toastr-init.js"></script>
+     
   

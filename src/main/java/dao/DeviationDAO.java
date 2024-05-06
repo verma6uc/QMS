@@ -331,7 +331,7 @@ public class DeviationDAO {
 
 			// 3. Insert justification (if needed)
 			if (dto.getDecision().equals(DeviationStatus.REJECTED.name())
-					|| dto.getDecision().equals(DeviationStatus.PENDING_MORE_INFO.name())) {
+					|| dto.getDecision().equals(DeviationStatus.MORE_INFO.name())) {
 				String insertJustificationSql = "INSERT INTO comments (content, author_id, related_id, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
 				PreparedStatement insertJustificationStmt = conn.prepareStatement(insertJustificationSql);
 				insertJustificationStmt.setString(1, dto.getJustificationForDecision());

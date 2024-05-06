@@ -62,7 +62,6 @@ public class DataFetchServlet extends HttpServlet {
 	private void handleInputSql(String sql, String search, HttpServletResponse response)
 			throws SQLException, IOException {
 
-
 		List<Object> parameters = new ArrayList<Object>();
 		if (sql.contains("?")) {
 			if (search != null) {
@@ -80,20 +79,13 @@ public class DataFetchServlet extends HttpServlet {
 		ArrayList<HashMap<String, String>> result = DatabaseUtility.executeQueryForPreview(sql, parameters);
 
 		Gson gson = new Gson();
-		JsonArray jsonArray = new JsonArray();
-
+		JsonElement element = null;
 		for (HashMap<String, String> map : result) {
-			JsonElement element = JsonParser.parseString(gson.toJson(map));
-			jsonArray.add(element);
+			element = JsonParser.parseString(gson.toJson(map));
 		}
 
-		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("total_count", result.size());
-		jsonObject.addProperty("incomplete_results", true);
-		jsonObject.add("items", jsonArray);
-		response.getWriter().write(new Gson().toJson(jsonObject));
-	
-		
+		response.getWriter().write(new Gson().toJson(element));
+
 	}
 
 	private Integer parseIntegerParam(HttpServletRequest request, String param) {

@@ -1,7 +1,18 @@
 
+<%@page import="model.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+
+<%
+
+User user = null;
+
+if (request.getSession().getAttribute("user") != null) {
+	user = (User) request.getSession().getAttribute("user");
+}
+
+%>
 
 <!--  Header Start -->
 <header class="topbar sticky-top">
@@ -349,7 +360,7 @@
 											icon="solar:alt-arrow-down-line-duotone"></iconify-icon></span>
 
 									<div class="d-none d-sm-block">
-										<h6 class="fw-bold fs-4 mb-1 profile-name">Aditya</h6>
+										<h6 class="fw-bold fs-4 mb-1 profile-name"><%=user.getUsername()%></h6>
 										<p class="fs-3 lh-base mb-0 profile-subtext">Role</p>
 									</div>
 								</div>
@@ -372,12 +383,12 @@
 										<img src="/assets/images/profile/default_profile_image.jpg" alt="user"
 											width="90" class="rounded-circle" />
 										<div class="ms-4">
-											<h4 class="mb-0 fs-5 fw-normal">Aditya</h4>
+											<h4 class="mb-0 fs-5 fw-normal"><%=user.getUsername()%></h4>
 											<span class="text-muted"></span>
 											<p class="text-muted mb-0 mt-1 d-flex align-items-center">
 												<iconify-icon icon="solar:mailbox-line-duotone"
 													class="fs-4 me-1"></iconify-icon>
-												Aditya@gmail.com
+												<%=user.getEmail()%>
 											</p>
 										</div>
 									</div>

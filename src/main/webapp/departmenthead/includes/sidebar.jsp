@@ -1,10 +1,20 @@
 
 
+<%@page import="model.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
 
 
+<%
+
+User user = null;
+
+if (request.getSession().getAttribute("user") != null) {
+	user = (User) request.getSession().getAttribute("user");
+}
+
+%>
 
 <!-- Sidebar Start -->
 <aside class="left-sidebar with-vertical">
@@ -148,7 +158,7 @@
 						<img src="/assets/images/profile/default_profile_image.jpg" width="45"
 							height="45" class="img-fluid rounded-circle" alt="" />
 						<div>
-							<h5 class="mb-1">Aditya</h5>
+							<h5 class="mb-1"><%=user.getUsername()%></h5>
 							
 						</div>
 					</div>

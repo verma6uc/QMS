@@ -359,6 +359,7 @@ public class DeviationDAO {
 
 		// Log the comments
 		logComments(reviewDTO.getComments(), deviationId, userId);
+		logComments(reviewDTO.getJustification(), deviationId, userId);
 
 		// Update department and user/user group associations (assuming separate tables
 		// exist)
@@ -370,12 +371,11 @@ public class DeviationDAO {
 
 	private void updateDeviationStatus(String decision, int deviationId, String justification) throws SQLException {
 		Connection connection = DatabaseUtility.connect();
-		String sql = "UPDATE deviations SET status = ?, justification_for_return = ?, updated_at = ? WHERE id = ?";
+		String sql = "UPDATE deviations SET status = ?::deviation_status , updated_at = ? WHERE id = ?";
 		try (PreparedStatement statement = connection.prepareStatement(sql)) {
 			statement.setString(1, decision);
-			statement.setString(2, justification);
-			statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-			statement.setInt(4, deviationId);
+			statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+			statement.setInt(3, deviationId);
 			statement.executeUpdate();
 		}
 	}
@@ -383,13 +383,12 @@ public class DeviationDAO {
 	private void logComments(String comments, int deviationId, int userId) throws SQLException {
 		Connection connection = DatabaseUtility.connect();
 		if (comments != null && !comments.isEmpty()) {
-			String sql = "INSERT INTO comments (content, author_id, related_table, related_id, created_at) VALUES (?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO comments (content, author_id, related_id, created_at) VALUES (?,  ?, ?, ?)";
 			try (PreparedStatement statement = connection.prepareStatement(sql)) {
 				statement.setString(1, comments);
 				statement.setInt(2, userId);
-				statement.setString(3, "deviations");
-				statement.setInt(4, deviationId);
-				statement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+ 				statement.setInt(3, deviationId);
+				statement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
 				statement.executeUpdate();
 			}
 		}
@@ -420,8 +419,8 @@ public class DeviationDAO {
 		Connection connection = DatabaseUtility.connect();
 		// Assuming a table 'deviation_user_groups' exists with columns 'deviation_id'
 		// and 'user_group_id'
-		String sqlDelete = "DELETE FROM deviation_user_groups WHERE deviation_id = ?";
-		String sqlInsert = "INSERT INTO deviation_user_groups (deviation_id, user_group_id) VALUES (?, ?)";
+		String sqlDelete = "DELETE FROM deviation_reviewers WHERE deviation_id = ?";
+		String sqlInsert = "INSERT INTO deviation_reviewers (deviation_id, reviewer_id) VALUES (?, ?)";
 
 		try (PreparedStatement deleteStatement = connection.prepareStatement(sqlDelete);
 				PreparedStatement insertStatement = connection.prepareStatement(sqlInsert)) {

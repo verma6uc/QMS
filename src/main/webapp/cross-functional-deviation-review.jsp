@@ -90,7 +90,8 @@
     <div class="card-header">Cross-Functional Review</div>
     <div class="card-body">
         <h5 class="card-title">Review Deviation</h5>
-        <form action="/action?widgetId=WIDGET_ID" method="post">
+        <form action="/crossFunctionalDeviationReview" method="post">
+        	<input type="hidden" name="deviationId" value="<%= request.getParameter("deviation_id")%>"> 
             <div class="mb-3">
                 <label for="cross-functional-assessment" class="form-label">Cross-Functional Assessment Required:</label>
                 <div class="form-check">
@@ -105,23 +106,23 @@
 
             <div class="mb-3 d-none" id="departmentSelection">
                 <label for="department" class="form-label">Department:</label>
-                <select class="form-select" id="department" name="department" data-child="userGroup"  data-sql="select id,name from departments d " required>
+                <select class="form-select" id="department" name="department" data-child="userGroup"  data-sql="select id,name from departments d " multiple  >
                     <!-- Dynamically populated -->
                 </select>
             </div>
 
             <div class="mb-3 d-none" id="userGroupSelection">
                 <label for="userGroup" class="form-label">User/User Group:</label>
-                <select class="form-select" id="userGroup" data-parent="department" data-sql="select first_name||' '||last_name as name,id  from users u where department_id = ? " name="userGroup" required>
+                <select class="form-select" id="userGroup" data-parent="department" data-sql="select first_name||' '||last_name as name,id  from users u where department_id = ? " name="userGroup"  multiple>
                     <!-- Dynamically populated -->
                 </select>
             </div>
             
             <div class="mb-3">
                 <label for="decision" class="form-label">Decision:</label>
-                <select class="form-select" id="decision" name="decision" onchange="toggleJustification()" required>
-                    <option value="Approve">Approve</option>
-                    <option value="Return">Return</option>
+                <select class="form-select" id="decision" name="decision" onchange="toggleJustification()"  >
+                    <option value="APPROVED_BY_QA">Approve</option>
+                    <option value="RETURNED_BY_QA">Return</option>
                 </select>
             </div>
 

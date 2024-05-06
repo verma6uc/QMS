@@ -3,6 +3,7 @@ package initiator.page.servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
@@ -44,14 +45,22 @@ public class CrossFunctionalDeviationReviewServlet extends HttpServlet {
 		CrossFunctionalDeviationReviewDTO reviewDTO = new CrossFunctionalDeviationReviewDTO();
 		reviewDTO.setCrossFunctionalRequired(request.getParameter("crossFunctionalRequired"));
 		if (!reviewDTO.getCrossFunctionalRequired().isEmpty()) {
-			String[] departmentIds = request.getParameterValues("department[]");
-			if (departmentIds != null) {
-				reviewDTO.setDepartment(Arrays.stream(departmentIds).map(Integer::parseInt).collect(Collectors.toList()));
-			}
-			String[] userGroupIds = request.getParameterValues("userGroup[]");
-			if (userGroupIds != null) {
-				reviewDTO.setUserGroup(Arrays.stream(userGroupIds).map(Integer::parseInt).collect(Collectors.toList()));
-			}
+			
+			if (!request.getParameter("department").isEmpty()) {
+                List<Integer> departmentIds = Arrays.stream(request.getParameter("department").split(","))
+                        .map(Integer::parseInt)
+                        .collect(Collectors.toList());
+                reviewDTO.setDepartment(departmentIds);
+            }
+			
+			if (!request.getParameter("userGroup").isEmpty()) {
+                List<Integer> userGroupIds = Arrays.stream(request.getParameter("userGroup").split(","))
+                        .map(Integer::parseInt)
+                        .collect(Collectors.toList());
+                reviewDTO.setUserGroup(userGroupIds);
+            }
+			
+		 
 		}
 
 		reviewDTO.setDecision(request.getParameter("decision"));

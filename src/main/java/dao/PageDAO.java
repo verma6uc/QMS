@@ -1,16 +1,17 @@
 package dao;
 
-import model.Page;
-import utils.DatabaseUtility;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import model.Page;
+import utils.DatabaseUtility;
 
 public class PageDAO {
 
@@ -69,7 +70,31 @@ public class PageDAO {
         }
         return false;
     }
-
+    public List<Page> getPagesByUserId(int userId) {
+        String sql = "SELECT p.* FROM public.pages p " +
+                     "JOIN public.page_roles pr ON p.page_id = pr.page_id " +
+                     "JOIN public.roles r ON pr.role_id = r.id " +
+                     "JOIN public.users u ON u.role_id = r.id " +
+                     "WHERE u.id = ?;";
+        List<Page> pages = new ArrayList<>();
+        try (Connection conn = DatabaseUtility.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Page page = new Page();
+                page.setPageId(rs.getInt("page_id"));
+                page.setName(rs.getString("name"));
+                page.setSlug(rs.getString("slug"));
+                page.setCreatedAt(rs.getTimestamp("created_at"));
+                page.setUpdatedAt(rs.getTimestamp("updated_at"));
+                pages.add(page);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to retrieve pages for user ID: " + userId, e);
+        }
+        return pages;
+    }
     public boolean deletePage(int pageId) {
         String sql = "DELETE FROM public.pages WHERE page_id = ?;";
         try (Connection conn = DatabaseUtility.connect();

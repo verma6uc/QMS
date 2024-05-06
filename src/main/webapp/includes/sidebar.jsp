@@ -1,17 +1,20 @@
 
 
+<%@page import="model.Page"%>
+<%@page import="java.util.List"%>
+<%@page import="dao.PageDAO"%>
 <%@page import="model.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
 <%
-
 User user = null;
 
 if (request.getSession().getAttribute("user") != null) {
 	user = (User) request.getSession().getAttribute("user");
 }
 
+List<Page> pages = new PageDAO().getPagesByUserId(user.getId());
 %>
 
 
@@ -41,106 +44,18 @@ if (request.getSession().getAttribute("user") != null) {
 				<!-- Home -->
 				<!-- ============================= -->
 				
-    <li class="sidebar-item">
-        <a class="sidebar-link sidebar-link primary-hover-bg" href="/admin/dashboard" aria-expanded="false">
-            <span class="aside-icon p-2 bg-primary-subtle rounded-1">
-                <i class="fa-solid fa-gauge fs-6"></i>
-            </span>
-            <span class="hide-menu ps-1">Dashboard</span>
-        </a>
-    </li>
-    
-    
-    
-     <li class="sidebar-item">
-            <a class="sidebar-link" href="/admin/companies" aria-expanded="false">
-                <span class="aside-icon">
-                    <i class="fa-solid fa-building"></i>
-                </span>
-                <span class="hide-menu">Companies</span>
-            </a>
-        </li>
+				<%for(Page page1 :pages){ %>
 
-        <!-- Users -->
-        <!-- <li class="sidebar-item">
-            <a class="sidebar-link" href="/admin/users" aria-expanded="false">
-                <span class="aside-icon">
-                    <i class="fa-solid fa-users"></i>
-                </span>
-                <span class="hide-menu">Users</span>
-            </a>
-        </li> -->
+				<li class="sidebar-item"><a
+					class="sidebar-link sidebar-link primary-hover-bg"
+					href="<%=page1.getSlug() %>" aria-expanded="false"> <span
+						class="aside-icon p-2 bg-primary-subtle rounded-1"> <i
+							class="fa-solid fa-gauge fs-6"></i>
+					</span> <span class="hide-menu ps-1"><%=page1.getName() %></span>
+				</a></li>
+				<%} %>
 
-        <!-- Templates -->
-        <!-- <li class="sidebar-item">
-            <a class="sidebar-link" href="/admin/templates" aria-expanded="false">
-                <span class="aside-icon">
-                    <i class="fa-solid fa-file-lines"></i>
-                </span>
-                <span class="hide-menu">Templates</span>
-            </a>
-        </li> -->
-
-        <!-- Documents -->
-        <li class="sidebar-item">
-            <a class="sidebar-link" href="/admin/documents" aria-expanded="false">
-                <span class="aside-icon">
-                    <i class="fa-solid fa-folder-open"></i>
-                </span>
-                <span class="hide-menu">Documents</span>
-            </a>
-        </li>
-        
-        <!-- Tag Management -->
-      <!--  <li class="sidebar-item">
-            <a class="sidebar-link" href="/admin/templatetags" aria-expanded="false">
-                <span class="aside-icon">
-                    <i class="fa-solid fa-tags"></i>
-                </span>
-                <span class="hide-menu">Template Tags</span>
-            </a>
-        </li>
-
-  <li class="sidebar-item">
-            <a class="sidebar-link" href="/admin/templatesections" aria-expanded="false">
-                <span class="aside-icon">
-                    <i class="fa-solid fa-th-large"></i>
-                </span>
-                <span class="hide-menu">Template Section</span>
-            </a>
-        </li>  
-        <!-- Search -->
-      <!--  <li class="sidebar-item">
-            <a class="sidebar-link" href="/admin/search" aria-expanded="false">
-                <span class="aside-icon">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <span class="hide-menu">Search</span>
-            </a>
-        </li>  --> 
-        
-        <!-- Reports -->
-        <!-- <li class="sidebar-item">
-            <a class="sidebar-link" href="/admin/reports" aria-expanded="false">
-                <span class="aside-icon">
-                    <i class="fa-solid fa-chart-bar"></i>
-                </span>
-                <span class="hide-menu">Reports</span>
-            </a>
-        </li> -->
-    <!-- <li class="sidebar-item">
-        <a class="sidebar-link sidebar-link success-hover-bg" href="/administration_configuration.jsp" aria-expanded="false">
-            <span class="aside-icon p-2 bg-success-subtle rounded-1">
-                <i class="fa-solid fa-screwdriver-wrench fs-6"></i>
-            </span>
-            <span class="hide-menu ps-1">Administration</span>
-        </a>
-    </li> -->
-
-
-				<!-- ============================= -->
-				<!-- OTHER -->
-				<!-- ============================= -->
+ 
 
 
 			</ul>
@@ -154,11 +69,11 @@ if (request.getSession().getAttribute("user") != null) {
 			<div class="card-body p-4">
 				<div class="d-flex align-items-center justify-content-between gap-3">
 					<div class="d-flex align-items-center gap-3">
-						<img src="/assets/images/profile/default_profile_image.jpg" width="45"
-							height="45" class="img-fluid rounded-circle" alt="" />
+						<img src="/assets/images/profile/default_profile_image.jpg"
+							width="45" height="45" class="img-fluid rounded-circle" alt="" />
 						<div>
 							<h5 class="mb-1"><%=user.getUsername()%></h5>
-							
+
 						</div>
 					</div>
 					<a href="/logout" class="position-relative"

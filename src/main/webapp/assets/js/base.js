@@ -67,7 +67,7 @@ $(document).ready(function() {
 
 function initializeInput(){
 	
-	$('input').each(function() {
+	$('input, textarea').each(function() {
 		var $input = $(this);
 		var inputData = $input.data('sql');
  

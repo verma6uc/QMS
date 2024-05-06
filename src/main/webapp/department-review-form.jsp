@@ -95,32 +95,32 @@
 								<div class="mb-3">
 									<label for="deviationNumber" class="form-label">Deviation
 										Number</label> <input type="text" class="form-control"
-										id="deviationNumber" value="" data-sql="select title  from deviations d where id=<%=request.getParameter("deviation_id") %>" readonly>
+										id="deviationNumber" name="deviation_id" value="" data-sql="select id as value  from deviations d where id=<%=request.getParameter("deviation_id") %>" readonly>
 								</div>
 								<div class="mb-3">
 									<label for="dateOfOccurrence" class="form-label">Date
 										of Occurrence</label> <input type="text" class="form-control"
-										id="dateOfOccurrence" value="2023-01-01" readonly>
+										id="dateOfOccurrence" value="" data-sql="select date_of_occurrence as value  from deviations d where id=<%=request.getParameter("deviation_id") %>" readonly>
 								</div>
 								<div class="mb-3">
 									<label for="dateOfIdentification" class="form-label">Date
 										of Identification</label> <input type="text" class="form-control"
-										id="dateOfIdentification" value="2023-01-02" readonly>
+										id="dateOfIdentification"  value="" data-sql="select date_of_identification as value  from deviations d where id=<%=request.getParameter("deviation_id") %>"  readonly>
 								</div>
 								<div class="mb-3">
 									<label for="description" class="form-label">Description</label>
-									<textarea class="form-control" id="description" rows="3"
-										readonly>This is a dummy description of the deviation explaining the issue in detail.</textarea>
+									<textarea class="form-control" id="description" rows="3" value="" data-sql="select description as value  from deviations d where id=<%=request.getParameter("deviation_id") %>" 
+										readonly></textarea>
 								</div>
 								<div class="mb-3">
 									<label for="reviewComments" class="form-label">Review
 										Comments</label>
-									<textarea class="form-control" id="reviewComments" rows="3"
+									<textarea class="form-control" name="reviewComments" id="reviewComments" rows="3"
 										required></textarea>
 								</div>
 								<div class="mb-3">
 									<label for="decision" class="form-label">Decision</label> <select
-										class="form-select" id="decision" required
+										class="form-select" id="decision" name="decision" required
 										onchange="showJustificationInput()">
 										<option value="">Choose...</option>
 										<option value="Approve">Approve</option>
@@ -131,7 +131,7 @@
 								<div class="mb-3 d-none" id="justificationWrapper">
 									<label for="justificationForDecision" class="form-label">Justification
 										for Decision</label>
-									<textarea class="form-control" id="justificationForDecision"
+									<textarea class="form-control" name="justificationForDecision" id="justificationForDecision"
 										rows="3"></textarea>
 								</div>
 								<button type="submit" class="btn btn-primary">Submit

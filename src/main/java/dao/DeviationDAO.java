@@ -321,7 +321,7 @@ public class DeviationDAO {
 			updateStmt.executeUpdate();
 
 			// 2. Insert review comments (always required)
-			String insertCommentSql = "INSERT INTO comments (content, author_id, related_table, related_id, created_at) VALUES (?, ?, 'deviations', ?, CURRENT_TIMESTAMP)";
+			String insertCommentSql = "INSERT INTO comments (content, author_id, related_id, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
 			PreparedStatement insertCommentStmt = conn.prepareStatement(insertCommentSql);
 			insertCommentStmt.setString(1, dto.getReviewComments());
 			// Assuming you have a mechanism to get the current user's ID:
@@ -332,7 +332,7 @@ public class DeviationDAO {
 			// 3. Insert justification (if needed)
 			if (dto.getDecision().equals(DeviationStatus.REJECTED.name())
 					|| dto.getDecision().equals(DeviationStatus.PENDING_MORE_INFO.name())) {
-				String insertJustificationSql = "INSERT INTO comments (content, author_id, related_table, related_id, created_at) VALUES (?, ?, 'deviations', ?, CURRENT_TIMESTAMP)";
+				String insertJustificationSql = "INSERT INTO comments (content, author_id, related_id, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
 				PreparedStatement insertJustificationStmt = conn.prepareStatement(insertJustificationSql);
 				insertJustificationStmt.setString(1, dto.getJustificationForDecision());
 				insertJustificationStmt.setInt(2, dto.getAuthorId()); // Replace with actual user ID retrieval logic

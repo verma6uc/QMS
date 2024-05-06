@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 
 import dao.DeviationDAO;
 import dto.CrossFunctionalDeviationReviewDTO;
+import model.User;
 
 @WebServlet("/crossFunctionalDeviationReview")
 public class CrossFunctionalDeviationReviewServlet extends HttpServlet {
@@ -31,8 +32,14 @@ public class CrossFunctionalDeviationReviewServlet extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		Gson gson = new Gson();
+		User user = null;
+
+		if (request.getSession().getAttribute("user") != null) {
+			user = (User) request.getSession().getAttribute("user");
+		}
+		
 		int deviationId = Integer.parseInt(request.getParameter("deviationId"));
-		int userId = (Integer) request.getSession().getAttribute("userId"); // assuming userId is stored in session
+		int userId = user.getId(); // assuming userId is stored in session
 
 		CrossFunctionalDeviationReviewDTO reviewDTO = new CrossFunctionalDeviationReviewDTO();
 		reviewDTO.setCrossFunctionalRequired(request.getParameter("crossFunctionalRequired"));

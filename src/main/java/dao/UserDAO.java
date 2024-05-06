@@ -195,4 +195,58 @@ public class UserDAO {
             throw e;
         }
     }
+    
+    /**
+     * Authenticates a user by their username and password.
+     *
+     * @param username the username of the user
+     * @param password the password of the user
+     * @return an Optional containing the authenticated user, or an empty Optional if authentication fails
+     * @throws SQLException if any database access error occurs
+     */
+    public Optional<User> login(String email, String password) throws SQLException {
+        String sql = "SELECT * FROM public.users WHERE email = ? AND password = ?";
+
+        try (Connection conn = DatabaseUtility.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            pstmt.setString(2, password); // Encrypt this if passwords are encrypted in DB
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(extractUserFromResultSet(rs));
+                }
+            }
+
+            return Optional.empty();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error logging in with username: " + email, e);
+            throw e;
+        }
+    }
+
+    /**
+     * Extracts a User object from a ResultSet.
+     *
+     * @param rs the ResultSet to extract the user from
+     * @return the extracted User object
+     * @throws SQLException if any database access error occurs
+     */
+    private User extractUserFromResultSet(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setId(rs.getInt("id"));
+        user.setUsername(rs.getString("username"));
+        user.setPassword(rs.getString("password"));
+        user.setRoleId(rs.getInt("role_id"));
+        user.setDepartmentId(rs.getInt("department_id"));
+        user.setFirstName(rs.getString("first_name"));
+        user.setLastName(rs.getString("last_name"));
+        user.setEmail(rs.getString("email"));
+        user.setPhoneNumber(rs.getString("phone_number"));
+        user.setStatusId(rs.getInt("status_id"));
+        user.setCreatedAt(rs.getTimestamp("created_at"));
+        user.setUpdatedAt(rs.getTimestamp("updated_at"));
+
+        return user;
+    }
 }

@@ -22,6 +22,6 @@ public class LogoutServlet extends HttpServlet {
 
 		// Redirect the user to the login page or any other appropriate page after
 		// logout
-		response.sendRedirect("/"); // You can change the URL to the login page
+		response.sendRedirect("/index.jsp"); // You can change the URL to the login page
 	}
 }

@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public class PageRoleDAO {
@@ -71,5 +72,27 @@ public class PageRoleDAO {
             LOGGER.severe("Error updating page role: " + e.getMessage());
         }
         return false;
+    }
+    
+    /**
+     * Retrieves the first page ID linked to a role.
+     *
+     * @param roleId The role ID.
+     * @return The ID of the first page.
+     */
+    public Optional<Integer> getFirstPageIdForRole(int roleId) {
+        String query = "SELECT pr.page_id FROM public.page_roles pr " +
+                "WHERE pr.role_id = ? ORDER BY pr.page_id LIMIT 1";
+        try (Connection conn = DatabaseUtility.connect();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, roleId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return Optional.of(rs.getInt("page_id"));
+            }
+        } catch (SQLException e) {
+            LOGGER.severe("Error retrieving first page ID for role: " + e.getMessage());
+        }
+        return Optional.empty();
     }
 }

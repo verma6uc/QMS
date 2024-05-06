@@ -45,10 +45,8 @@ public class DepartmentalReviewServlet extends HttpServlet {
 		}
 
 		// 3. Create DTO and call DAO
-		DeviationStatus decisionEnum = DeviationStatus.valueOf(decision.toUpperCase().replace(" ", "_"));
-		decision = decisionEnum.name();
 		DepartmentalDeviationReviewDTO dto = new DepartmentalDeviationReviewDTO(deviationId, reviewComments,
-				decisionEnum.name(), justificationForDecision, user.getId());
+				decision, justificationForDecision, user.getId());
 		DeviationDAO dao = new DeviationDAO();
 
 		try {

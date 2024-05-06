@@ -90,12 +90,12 @@
 						<div class="card-header">Departmental Review Form</div>
 						<div class="card-body">
 							<h5 class="card-title">Review Deviation Details</h5>
-							<form action="/action?widgetId=WIDGET_ID" method="post"
+							<form action="/DepartmentalReviewServlet" method="post"
 								id="departmental-review-form">
 								<div class="mb-3">
 									<label for="deviationNumber" class="form-label">Deviation
 										Number</label> <input type="text" class="form-control"
-										id="deviationNumber" name="deviation_id" value="" data-sql="select id as value  from deviations d where id=<%=request.getParameter("deviation_id") %>" readonly>
+										id="deviationNumber" name="deviationId" value="" data-sql="select id as value  from deviations d where id=<%=request.getParameter("deviation_id") %>" readonly>
 								</div>
 								<div class="mb-3">
 									<label for="dateOfOccurrence" class="form-label">Date
@@ -123,9 +123,9 @@
 										class="form-select" id="decision" name="decision" required
 										onchange="showJustificationInput()">
 										<option value="">Choose...</option>
-										<option value="Approve">Approve</option>
-										<option value="Need More Info">Need More Info</option>
-										<option value="Reject">Reject</option>
+										<option value="APPROVED_DEPARTMENT_REVIEW">Approve</option>
+										<option value="MORE_INFO">Need More Info</option>
+										<option value="REJECTED">Reject</option>
 									</select>
 								</div>
 								<div class="mb-3 d-none" id="justificationWrapper">

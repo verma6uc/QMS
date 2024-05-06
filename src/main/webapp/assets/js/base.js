@@ -65,28 +65,28 @@ $(document).ready(function() {
 
 })
 
-function initializeInput(){
-	
+function initializeInput() {
+
 	$('input, textarea').each(function() {
 		var $input = $(this);
 		var inputData = $input.data('sql');
- 
+
 		if (inputData) {
 			// Initialize select2 with AJAX and immediate data loading
- $.ajax({
-		type: 'POST',
-		url: '/data/fetch?elementType=INPUT',
-		data: { sql: inputData },  // Fetch default data with an empty search
-		dataType: 'json',
-		success: function(data) {
-			if(data){
-				$input.val(data.value)
-			}
-		},
-		error: function() {
-			console.error('Error fetching initial data for select2.');
-		}
-	});
+			$.ajax({
+				type: 'POST',
+				url: '/data/fetch?elementType=INPUT',
+				data: { sql: inputData },  // Fetch default data with an empty search
+				dataType: 'json',
+				success: function(data) {
+					if (data) {
+						$input.val(data.value)
+					}
+				},
+				error: function() {
+					console.error('Error fetching initial data for select2.');
+				}
+			});
 
 			// Optionally, fetch initial data immediately on load
 		} else {
@@ -100,18 +100,58 @@ function initializeSelect2() {
 	$('select').each(function() {
 		var $select = $(this);
 		var sqlData = $select.data('sql');
- 
+		var isAttachingSelectEvent = $select.data('child');  // Check for 'data-child' attribute
+
+
+
+
 		if (sqlData) {
 			// Initialize select2 with AJAX and immediate data loading
-			$select.select2({
-				ajax: setupAjax($select, sqlData),
-				placeholder: 'Search for an item',
-				minimumInputLength: 0,  // Allows dropdown to open with no input, showing default items
-				templateResult: formatRepo,
-				templateSelection: formatRepoSelection,
-				allowClear: true
-			});
 
+			var parentId = $select.data('parent');
+
+			if (parentId == null) {
+
+				$select.select2({
+					ajax: setupAjax($select, sqlData),
+					placeholder: 'Search for an item',
+					minimumInputLength: 0,  // Allows dropdown to open with no input, showing default items
+					templateResult: formatRepo,
+					templateSelection: formatRepoSelection,
+					allowClear: true
+				});
+			}
+			if (isAttachingSelectEvent) {
+
+				// Handle the 'select' event
+				$select.on('select2:select', function(e) {
+					var data = e.params.data;
+					console.log('Item selected:', data.id);
+					    var $childSelect = $('#' + isAttachingSelectEvent);
+
+					var childSqlData = $('#' + isAttachingSelectEvent).data('sql');
+					if (childSqlData && childSqlData.includes('?')) {
+						childSqlData = childSqlData.replace('?', data.id);
+						console.log('Modified SQL Data:', childSqlData);
+						// Now you can use modifiedSqlData for further operations
+					}
+					console.log('Item childSqlData:', childSqlData);
+					if ($childSelect.data('select2')) {
+            $childSelect.select2('destroy');
+        }
+					$('#' + isAttachingSelectEvent).select2({
+						ajax: setupAjax($select, childSqlData),
+						placeholder: 'Search for an item',
+						minimumInputLength: 0,  // Allows dropdown to open with no input, showing default items
+						templateResult: formatRepo,
+						templateSelection: formatRepoSelection,
+						allowClear: true
+					});
+
+					fetchInitialData($('#' + isAttachingSelectEvent), childSqlData);
+
+				});
+			}
 			// Optionally, fetch initial data immediately on load
 			fetchInitialData($select, sqlData);
 		} else {
@@ -151,6 +191,13 @@ function setupAjax($select, sqlData) {
 }
 
 function fetchInitialData($select, sqlData) {
+
+	var parentId = $select.data('parent');
+	if (parentId) {
+		var parentValue = $('#' + parentId).val();
+		sqlData = sqlData.replace('?', parentValue);
+	}
+
 
 	$.ajax({
 		type: 'POST',

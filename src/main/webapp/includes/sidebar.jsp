@@ -1,4 +1,5 @@
-
+<%@ page import="java.util.regex.Matcher"%>
+<%@page import="java.util.regex.Pattern"%>
 
 <%@page import="java.util.Arrays"%>
 <%@page import="model.Page"%>
@@ -64,8 +65,16 @@ List<Page> pages = new PageDAO().getPagesByUserId(user.getId());
 		</nav>
 		<!-- End Sidebar navigation -->
 	</div>
-	
-	
+
+	<%!public String truncateUsername(String input, int maxChars) {
+    input = input.replaceAll("\\.com$", ""); // Remove ".com" at the end
+    return input.substring(0, Math.min(input.length(), maxChars)) + "...";
+}%>
+
+	<%
+int maxChars = 10; // Define the maximum number of characters
+String truncatedUsername = truncateUsername(user.getUsername(), maxChars);
+%>
 
 	<div class="blocks-card sidebar-ad mx-3">
 		<div class="card bg-primary-subtle mb-0 shadow-none">
@@ -76,18 +85,19 @@ List<Page> pages = new PageDAO().getPagesByUserId(user.getId());
 							width="45" height="45" class="img-fluid rounded-circle"
 							alt="spike-img" />
 						<div style="max-width: 40%;">
-						<h5 class="mb-1 text-truncat"><%=user.getUsername()%></h5> 
+							<h5 class="mb-1 text-truncat"><%= truncatedUsername %></h5>
 						</div>
+						<a href="/logout" class="position-relative"
+							data-bs-toggle="tooltip" data-bs-placement="top"
+							data-bs-title="Logout"> <iconify-icon
+								icon="solar:logout-line-duotone" class="fs-8"></iconify-icon>
+						</a>
 					</div>
-					<a href="/logout" class="position-relative"
-						data-bs-toggle="tooltip" data-bs-placement="top"
-						data-bs-title="Logout"> <iconify-icon
-							icon="solar:logout-line-duotone" class="fs-8"></iconify-icon>
-					</a>
 				</div>
 			</div>
 		</div>
 	</div>
+
 
 	<!-- ---------------------------------- -->
 	<!-- Start Vertical Layout Sidebar -->

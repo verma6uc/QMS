@@ -95,12 +95,13 @@
     </p>
     
     <!-- Form Start -->
-    <form action="/action?widgetId=WIDGET_ID" method="post">
+    <form action="/ApprovalByQA" method="post">
+        	<input type="hidden" name="deviationId" value="<%= request.getParameter("deviation_id")%>"> 
 
       <!-- Approver Comments -->
       <div class="mb-3">
         <label for="approverComments" class="form-label">Approver Comments</label>
-        <input type="text" class="form-control" id="approverComments" name="approver_comments" placeholder="Enter any comments">
+        <input type="text" class="form-control" id="approverComments" name="approverComments" placeholder="Enter any comments">
       </div>
       
       <!-- Decision Selection -->
@@ -108,16 +109,16 @@
         <label class="form-label">Decision</label>
         <select class="form-select" id="decisionSelect" name="decision" required onchange="handleDecisionVisibility()">
           <option value="">Select Decision</option>
-          <option value="Approved">Approve</option>
-          <option value="Return">Return</option>
-          <option value="Drop">Drop</option>
+          <option value="APPROVED_BY_QA">Approve</option>
+          <option value="RETURNED_BY_QA">Return</option>
+          <option value="REJECTED">Drop</option>
         </select>
       </div>
       
       <!-- Justification for Decision -->
       <div class="mb-3" style="display:none;" id="justificationSection">
         <label for="justification" class="form-label">Justification for Decision</label>
-        <textarea class="form-control" id="justification" name="justification" required placeholder="Provide justification for your decision"></textarea>
+        <textarea class="form-control" id="justification" name="justification" placeholder="Provide justification for your decision"></textarea>
       </div>
       
       <!-- Submit Button -->
@@ -133,7 +134,7 @@
     var justificationSection = document.getElementById('justificationSection');
     
     // Show justification input if 'Return' or 'Drop' is selected
-    if (decision === 'Return' || decision === 'Drop') {
+    if (decision === 'RETURNED_BY_QA' || decision === 'REJECTED') {
       justificationSection.style.display = 'block';
     } else {
       justificationSection.style.display = 'none';
@@ -164,6 +165,7 @@
 
 		</script>
 
+	<script src="/assets/js/base.js"></script>
 	<script src="/assets/js/app.min.js"></script>
 	<script src="/assets/js/app.init.js"></script>
 	<script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

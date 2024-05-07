@@ -450,7 +450,7 @@ public class DeviationDAO {
 
 	public void insertComments(ApprovalByQADTO approvalByQADTO) throws SQLException {
 		Connection connection = DatabaseUtility.connect();
-		String insertQuery = "INSERT INTO public.comments (\"content\", author_id, related_table, related_id, created_at) VALUES (?, ?, 'deviations', ?, CURRENT_TIMESTAMP)";
+		String insertQuery = "INSERT INTO public.comments (\"content\", author_id, related_id, created_at) VALUES (?, ?,  ?, CURRENT_TIMESTAMP)";
 		try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
 			statement.setString(1, approvalByQADTO.getApproverComments());
 			if (approvalByQADTO.getUserId() != null) {
@@ -465,7 +465,7 @@ public class DeviationDAO {
 
 	public void insertJustification(ApprovalByQADTO approvalByQADTO) throws SQLException {
 		Connection connection = DatabaseUtility.connect();
-		String insertQuery = "INSERT INTO public.comments (\"content\", author_id, related_table, related_id, created_at) VALUES (?, ?, 'deviations', ?, CURRENT_TIMESTAMP)";
+		String insertQuery = "INSERT INTO public.comments (\"content\", author_id, related_id, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
 		try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
 			statement.setString(1, approvalByQADTO.getJustification());
 			if (approvalByQADTO.getUserId() != null) {

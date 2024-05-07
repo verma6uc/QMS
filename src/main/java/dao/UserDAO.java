@@ -204,21 +204,21 @@ public class UserDAO {
      * @return an Optional containing the authenticated user, or an empty Optional if authentication fails
      * @throws SQLException if any database access error occurs
      */
-    public Optional<User> login(String email, String password) throws SQLException {
+    public User login(String email, String password) throws SQLException {
         String sql = "SELECT * FROM public.users WHERE email = ? AND password = ?";
 
         try (Connection conn = DatabaseUtility.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, email);
-            pstmt.setString(2, password); // Encrypt this if passwords are encrypted in DB
+            pstmt.setString(2, password);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return Optional.of(extractUserFromResultSet(rs));
+                    return extractUserFromResultSet(rs);
                 }
             }
 
-            return Optional.empty();
+            return null;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error logging in with username: " + email, e);
             throw e;

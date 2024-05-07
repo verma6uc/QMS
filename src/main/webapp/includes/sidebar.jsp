@@ -1,5 +1,6 @@
 
 
+<%@page import="java.util.Arrays"%>
 <%@page import="model.Page"%>
 <%@page import="java.util.List"%>
 <%@page import="dao.PageDAO"%>
@@ -63,17 +64,19 @@ List<Page> pages = new PageDAO().getPagesByUserId(user.getId());
 		</nav>
 		<!-- End Sidebar navigation -->
 	</div>
+	
+	
 
-	<div class="blocks-card sidebar-ad mx-3 mt-3">
+	<div class="blocks-card sidebar-ad mx-3">
 		<div class="card bg-primary-subtle mb-0 shadow-none">
 			<div class="card-body p-4">
 				<div class="d-flex align-items-center justify-content-between gap-3">
 					<div class="d-flex align-items-center gap-3">
 						<img src="/assets/images/profile/default_profile_image.jpg"
-							width="45" height="45" class="img-fluid rounded-circle" alt="" />
-						<div>
-							<h5 class="mb-1"><%=user.getUsername()%></h5>
-
+							width="45" height="45" class="img-fluid rounded-circle"
+							alt="spike-img" />
+						<div style="max-width: 40%;">
+						<h5 class="mb-1 text-truncat"><%=user.getUsername()%></h5> 
 						</div>
 					</div>
 					<a href="/logout" class="position-relative"

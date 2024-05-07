@@ -1,4 +1,5 @@
 
+<%@page import="com.mchange.v2.sql.filter.SynchronizedFilterDataSource"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -17,6 +18,13 @@
 	href="/assets/images/logos/favicon.png" />
 
 <!-- Core Css -->
+<%
+if (request.getSession().getAttribute("user") == null) {
+	response.sendRedirect("/index.jsp");
+	return;
+}
+
+%>
 
 <title>Dashboard</title>
 

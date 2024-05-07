@@ -47,7 +47,7 @@ public class InitiateDeviation extends HttpServlet {
 		String riskAssessment = request.getParameter("riskAssessment");
 		String standardProcedure = request.getParameter("standardProcedure");
 		String immediateCorrectiveAction = request.getParameter("immediateCorrectiveAction");
-		String impactOnOtherBatches = request.getParameter("impactOnOtherBatches");
+		Boolean impactOnOtherBatches = request.getParameter("impactOnBatches").equals("YES");
 
 		// ... (Similarly, retrieve other fields based on eventRelatedType) ...
 
@@ -71,7 +71,7 @@ public class InitiateDeviation extends HttpServlet {
 		dto.setStandardProcedure(standardProcedure);
 		dto.setImmediateCorrectiveAction(immediateCorrectiveAction);
 		dto.setDeviationRootCause(deviationRootCause);
-		dto.setImpactOnOtherBatches(Boolean.parseBoolean(impactOnOtherBatches));
+		dto.setImpactOnOtherBatches(impactOnOtherBatches);
 		// ... (Populate other DTO fields based on eventRelatedType) ...
 
 		switch (eventRelatedType) {

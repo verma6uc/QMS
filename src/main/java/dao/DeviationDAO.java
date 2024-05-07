@@ -219,11 +219,12 @@ public class DeviationDAO {
 			stmt.setString(4, dto.getJustificationForDelay());
 			stmt.setString(5, dto.getEventRelatedType());
 			stmt.setString(6, dto.getDescription());
-			stmt.setString(7, dto.getDeviationRootCause());
-			stmt.setString(8, dto.getImmediateCorrectiveAction());
-			stmt.setString(9, dto.getRiskAssessment());
-			stmt.setString(10, dto.getStandardProcedure());
-			stmt.setInt(11, dto.getInitiatedByUserId());
+			stmt.setInt(7, dto.getInitiatedByUserId());
+			stmt.setString(8, dto.getDeviationRootCause());
+			stmt.setString(9, dto.getImmediateCorrectiveAction());
+			stmt.setString(10, dto.getRiskAssessment());
+			stmt.setString(11, dto.getStandardProcedure());
+
 			// Execute and retrieve the generated deviationId
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {

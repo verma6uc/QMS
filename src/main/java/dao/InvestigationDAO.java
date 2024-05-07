@@ -108,8 +108,6 @@ public class InvestigationDAO {
 
 			if (formDTO.isInvestigationRequired()) {
 				handleInvestigationWorkflow(formDTO);
-			} else {
-				handleCapaWorkflow(formDTO);
 			}
 
 			connection.commit();
@@ -159,26 +157,6 @@ public class InvestigationDAO {
 			ps.setBoolean(1, true);
 			ps.setString(2, Enums.DeviationStatus.PERFORMING_RCA.name());
 			ps.setInt(3, Integer.parseInt(formDTO.getDeviationId()));
-			ps.executeUpdate();
-		}
-	}
-
-	private void handleCapaWorkflow(InvestigationCapaFormDTO formDTO) throws SQLException {
-		// Insert into capas table
-		Connection connection = DatabaseUtility.connect();
-		String capaInsertSql = "INSERT INTO capas (deviation_id, description, created_at) VALUES (?, ?, ?)";
-		try (PreparedStatement ps = connection.prepareStatement(capaInsertSql)) {
-			ps.setInt(1, Integer.parseInt(formDTO.getDeviationId()));
-			ps.setString(2, "CAPA initiated directly from deviation"); // Placeholder description
-			ps.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
-			ps.executeUpdate();
-		}
-
-		// Update deviations table
-		String deviationUpdateSql = "UPDATE deviations SET status = ?::deviation_status WHERE id = ?";
-		try (PreparedStatement ps = connection.prepareStatement(deviationUpdateSql)) {
-			ps.setString(1, Enums.DeviationStatus.CAPA_INITIATED.name()); // Assuming a status for CAPA
-			ps.setInt(2, Integer.parseInt(formDTO.getDeviationId()));
 			ps.executeUpdate();
 		}
 	}

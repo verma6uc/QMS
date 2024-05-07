@@ -106,14 +106,14 @@
 
             <div class="mb-3 d-none" id="departmentSelection">
                 <label for="department" class="form-label">Department:</label>
-                <select class="form-select" id="department" name="department" data-child="userGroup"  data-sql="select id,name from departments d " multiple  >
+                <select class="form-select" id="department" name="department" data-sql="select id,name from departments d " multiple  >
                     <!-- Dynamically populated -->
                 </select>
             </div>
 
             <div class="mb-3 d-none" id="userGroupSelection">
                 <label for="userGroup" class="form-label">User/User Group:</label>
-                <select class="form-select" id="userGroup" data-parent="department" data-sql="select first_name||' '||last_name as name,id  from users u where department_id = ? " name="userGroup"  multiple>
+                <select class="form-select" id="userGroup" data-parent="department" data-sql="select first_name||' '||last_name as name,id  from users u where department_id in (?) " name="userGroup"  multiple>
                     <!-- Dynamically populated -->
                 </select>
             </div>

@@ -96,125 +96,100 @@ function initializeInput() {
 }
 
 function initializeSelect2() {
+    $('select').each(function() {
+        var $select = $(this);
+        var sqlData = $select.data('sql');
 
-	$('select').each(function() {
-		var $select = $(this);
-		var sqlData = $select.data('sql');
-		var isAttachingSelectEvent = $select.data('child');  // Check for 'data-child' attribute
+        if (sqlData) {
+            // Initialize select2 with AJAX and immediate data loading
+            $select.select2({
+                ajax: setupAjax($select, sqlData),
+                placeholder: 'Search for an item',
+                minimumInputLength: 0,  // Allows dropdown to open with no input, showing default items
+                templateResult: formatRepo,
+                templateSelection: formatRepoSelection,
+                allowClear: true
+            });
 
-
-
-
-		if (sqlData) {
-			// Initialize select2 with AJAX and immediate data loading
-
-			var parentId = $select.data('parent');
-
-			if (parentId == null) {
-
-				$select.select2({
-					ajax: setupAjax($select, sqlData),
-					placeholder: 'Search for an item',
-					minimumInputLength: 0,  // Allows dropdown to open with no input, showing default items
-					templateResult: formatRepo,
-					templateSelection: formatRepoSelection,
-					allowClear: true
-				});
-			}
-			if (isAttachingSelectEvent) {
-
-				// Handle the 'select' event
-				$select.on('select2:select', function(e) {
-					var data = e.params.data;
-					console.log('Item selected:', data.id);
-					    var $childSelect = $('#' + isAttachingSelectEvent);
-
-					var childSqlData = $('#' + isAttachingSelectEvent).data('sql');
-					if (childSqlData && childSqlData.includes('?')) {
-						childSqlData = childSqlData.replace('?', data.id);
-						console.log('Modified SQL Data:', childSqlData);
-						// Now you can use modifiedSqlData for further operations
-					}
-					console.log('Item childSqlData:', childSqlData);
-					if ($childSelect.data('select2')) {
-            $childSelect.select2('destroy');
+            // Optionally, fetch initial data immediately on load if the select does not depend on another
+            if (!$select.data('parent')) {
+                fetchInitialData($select, sqlData);
+            }
+        } else {
+            console.log('Required data attributes (sql, widgetId) are missing.');
         }
-					$('#' + isAttachingSelectEvent).select2({
-						ajax: setupAjax($select, childSqlData),
-						placeholder: 'Search for an item',
-						minimumInputLength: 0,  // Allows dropdown to open with no input, showing default items
-						templateResult: formatRepo,
-						templateSelection: formatRepoSelection,
-						allowClear: true
-					});
+    });
 
-					fetchInitialData($('#' + isAttachingSelectEvent), childSqlData);
+   
+    // Generic event listener for any select with a data-parent attribute
+    $('select[data-parent]').each(function() {
+        var $dependentSelect = $(this);
+        var parentId = $dependentSelect.data('parent');
 
-				});
-			}
-			// Optionally, fetch initial data immediately on load
-			fetchInitialData($select, sqlData);
-		} else {
-			console.log('Required data attributes (sql, widgetId) are missing.');
-		}
-	});
-
+        $('#' + parentId).on('change', function() {
+            var parentValue = $(this).val();  // Get the selected value(s) from the parent select
+            if (parentValue) {
+                // Replace the placeholder in SQL data with actual parent value
+                var modifiedSqlData = $dependentSelect.data('sql').replace('?', parentValue);
+                fetchInitialData($dependentSelect, modifiedSqlData);
+            } else {
+                // Clear the dependent select if no value is selected in parent
+                $dependentSelect.empty().trigger('change');
+            }
+        });
+    });
 }
+
 
 function setupAjax($select, sqlData) {
 
 	return {
-		type: 'POST',
-		url: '/data/fetch',
-		dataType: 'json',
-		delay: 250,
-		timeout: 10000,  // 10 seconds timeout
-		data: function(params) {
-			var searchTerm = params.term || '';  // Use an empty string as default to fetch initial data
-			return {
-				sql: sqlData,
-				search: searchTerm,
-				page: params.page || 1
-			};
-		},
-		processResults: function(data, params) {
-			params.page = params.page || 1;
-			return {
-				results: data.items,
-				pagination: {
-					more: (params.page * 10) < data.total_count
-				}
-			};
-		},
-		cache: false
-	};
+        type: 'POST',
+        url: '/data/fetch',
+        dataType: 'json',
+        delay: 250,
+        timeout: 10000,  // 10 seconds timeout
+        data: function(params) {
+            var searchTerm = params.term || '';  // Use an empty string as default to fetch initial data
+            var parentId = $select.data('parent');
+            var parentValue = parentId ? $('#' + parentId).val() : null;
+
+            return {
+                sql: parentValue ? sqlData.replace('?', parentValue) : sqlData,
+                search: searchTerm,
+                page: params.page || 1
+            };
+        },
+        processResults: function(data, params) {
+            params.page = params.page || 1;
+            return {
+                results: data.items,
+                pagination: {
+                    more: (params.page * 10) < data.total_count
+                }
+            };
+        },
+        cache: false
+    };
 }
 
 function fetchInitialData($select, sqlData) {
 
-	var parentId = $select.data('parent');
-	if (parentId) {
-		var parentValue = $('#' + parentId).val();
-		sqlData = sqlData.replace('?', parentValue);
-	}
-
-
 	$.ajax({
-		type: 'POST',
-		url: '/data/fetch',
-		data: { sql: sqlData, search: '', page: 1 },  // Fetch default data with an empty search
-		dataType: 'json',
-		success: function(data) {
-			// Load initial data into select2
-			var items = data.items.map(function(item) {
-				return { id: item.id, text: item.name };
-			});
-			$select.select2('data', items);  // Note: This method depends on Select2 version. May need adjustment.
-		},
-		error: function() {
-			console.error('Error fetching initial data for select2.');
-		}
-	});
+        type: 'POST',
+        url: '/data/fetch',
+        data: { sql: sqlData, search: '', page: 1 },  // Fetch default data with an empty search
+        dataType: 'json',
+        success: function(data) {
+            var items = data.items.map(function(item) {
+                return { id: item.id, text: item.name };
+            });
+            $select.empty().select2({ data: items });  // Refresh the select with new data
+        },
+        error: function() {
+            console.error('Error fetching initial data for select2.');
+        }
+    });
 }
 
 function formatRepoSelection(repo) {

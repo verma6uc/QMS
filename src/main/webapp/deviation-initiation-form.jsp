@@ -162,6 +162,36 @@ if (request.getSession().getAttribute("user") == null) {
                 <textarea class="form-control" id="description" name="description" rows="3" required maxlength="5000"></textarea>
             </div>
             <!-- Submit Button -->
+             <div class="mb-3">
+                <label for="reasonRootCause" class="form-label">Reason/Root Cause</label>
+                <textarea class="form-control" id="reasonRootCause" name="reasonRootCause" rows="3" maxlength="5000" placeholder="Suggest probable root causes."></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="immediateCorrectiveActions" class="form-label">Immediate Corrective Actions Taken</label>
+                <textarea class="form-control" id="immediateCorrectiveActions" name="immediateCorrectiveActions" rows="3" maxlength="5000" placeholder="Suggest immediate corrective actions."></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="riskAssessment" class="form-label">Risk Assessment</label>
+                <textarea class="form-control" id="riskAssessment" name="riskAssessment" rows="3" maxlength="5000" placeholder="Provide detailed risk assessment based on the deviation type and affected areas."></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="impactOnBatches" class="form-label">Impact on Batches</label>
+                <select class="form-select" id="impactOnBatches" name="impactOnBatches">
+                    <option value="">Select Option</option>
+                    <option value="YES">Yes</option>
+                    <option value="NO">No</option>
+                </select>
+            </div>
+             
+            <div class="mb-3">
+                <label for="remarks" class="form-label">Remarks</label>
+                <textarea class="form-control" id="remarks" name="remarks" rows="2" maxlength="2500"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="standardProcedure" class="form-label">Standard Procedure</label>
+                <textarea class="form-control" id="standardProcedure" name="standardProcedure" rows="3" maxlength="5000"></textarea>
+            </div>
+            <!-- Submit Button -->
             <button type="submit" class="btn btn-primary">Submit Deviation</button>
         </form>
     </div>
@@ -174,6 +204,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const timeOfIdentification = document.getElementById('timeOfIdentification');
     const justificationForDelayContainer = document.getElementById('justificationForDelayContainer');
     const eventRelatedTo = document.getElementById('eventRelatedTo');
+    
+    
+   
 
     // Limit date inputs to not allow future dates
     const today = new Date().toISOString().split('T')[0];

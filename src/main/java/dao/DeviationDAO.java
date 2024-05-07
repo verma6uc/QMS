@@ -193,7 +193,7 @@ public class DeviationDAO {
 	private int insertDeviationRecord(DeviationInitiateDTO dto) throws SQLException {
 		Connection conn = DatabaseUtility.connect();
 		String sql = "INSERT INTO deviations (date_of_occurrence, date_of_identification, time_of_identification, "
-				+ "justification_for_delay, event_related_type, description,initiated_by_user_id) VALUES (?, ?, ?, ?, ?::event_related_enum, ?,?) RETURNING id"; // Assuming
+				+ "justification_for_delay, event_related_type, description,initiated_by_user_id,deviation_root_cause,immediate_corrective_action,risk_assessment,standard_proceduure) VALUES (?, ?, ?, ?, ?::event_related_enum, ?,?,?,?,?,?) RETURNING id"; // Assuming
 		// //
 		// key
 
@@ -219,7 +219,11 @@ public class DeviationDAO {
 			stmt.setString(4, dto.getJustificationForDelay());
 			stmt.setString(5, dto.getEventRelatedType());
 			stmt.setString(6, dto.getDescription());
-			stmt.setInt(7, dto.getInitiatedByUserId());
+			stmt.setString(7, dto.getDeviationRootCause());
+			stmt.setString(8, dto.getImmediateCorrectiveAction());
+			stmt.setString(9, dto.getRiskAssessment());
+			stmt.setString(10, dto.getStandardProcedure());
+			stmt.setInt(11, dto.getInitiatedByUserId());
 			// Execute and retrieve the generated deviationId
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {

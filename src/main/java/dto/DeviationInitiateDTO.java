@@ -22,6 +22,12 @@ public class DeviationInitiateDTO {
 
 	private String description;
 
+	private String deviationRootCause;
+	private String riskAssessment;
+	private String standardProcedure;
+	private String immediateCorrectiveAction;
+	private Boolean impactOnOtherBatches;
+
 	// Getters and setters for all fields.
 
 	public String getDateOfOccurrence() {
@@ -126,6 +132,46 @@ public class DeviationInitiateDTO {
 
 	public void setInitiatedByUserId(Integer initiatedByUserId) {
 		this.initiatedByUserId = initiatedByUserId;
+	}
+
+	public String getDeviationRootCause() {
+		return deviationRootCause;
+	}
+
+	public void setDeviationRootCause(String deviationRootCause) {
+		this.deviationRootCause = deviationRootCause;
+	}
+
+	public String getRiskAssessment() {
+		return riskAssessment;
+	}
+
+	public void setRiskAssessment(String riskAssessment) {
+		this.riskAssessment = riskAssessment;
+	}
+
+	public String getStandardProcedure() {
+		return standardProcedure;
+	}
+
+	public void setStandardProcedure(String standardProcedure) {
+		this.standardProcedure = standardProcedure;
+	}
+
+	public String getImmediateCorrectiveAction() {
+		return immediateCorrectiveAction;
+	}
+
+	public void setImmediateCorrectiveAction(String immediateCorrectiveAction) {
+		this.immediateCorrectiveAction = immediateCorrectiveAction;
+	}
+
+	public Boolean getImpactOnOtherBatches() {
+		return impactOnOtherBatches;
+	}
+
+	public void setImpactOnOtherBatches(Boolean impactOnOtherBatches) {
+		this.impactOnOtherBatches = impactOnOtherBatches;
 	}
 
 }

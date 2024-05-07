@@ -1,5 +1,7 @@
 package dto;
 
+
+
 public class ApprovalByQADTO {
 	private Integer deviationId;
 	private String approverComments;

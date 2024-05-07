@@ -1,7 +1,7 @@
 package dto;
 
 public class PerformRCADTO {
-	private Integer deviationId;
+	private Integer investigationId;
 	private String investigationTool;
 	private String rootCauseConclusion;
 	private String riskImpactAssessment;
@@ -35,14 +35,14 @@ public class PerformRCADTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PerformRCADTO(Integer deviationId, String investigationTool, String rootCauseConclusion,
+	public PerformRCADTO(Integer investigationId, String investigationTool, String rootCauseConclusion,
 			String riskImpactAssessment, String whyQuestion1, String whyAnswer1, String whyQuestion2, String whyAnswer2,
 			String whyQuestion3, String whyAnswer3, String whyQuestion4, String whyAnswer4, String whyQuestion5,
 			String whyAnswer5, String abilityAssessment, Boolean abilityResult, String directionAssessment,
 			Boolean directionResult, String knowledgeAssessment, Boolean knowledgeResult, String opportunityAssessment,
 			Boolean opportunityResult, String motivationAssessment, Boolean motivationResult) {
 		super();
-		this.deviationId = deviationId;
+		this.investigationId = investigationId;
 		this.investigationTool = investigationTool;
 		this.rootCauseConclusion = rootCauseConclusion;
 		this.riskImpactAssessment = riskImpactAssessment;
@@ -68,12 +68,12 @@ public class PerformRCADTO {
 		this.motivationResult = motivationResult;
 	}
 
-	public Integer getDeviationId() {
-		return deviationId;
+	public Integer getInvestigationId() {
+		return investigationId;
 	}
 
-	public void setDeviationId(Integer deviationId) {
-		this.deviationId = deviationId;
+	public void setInvestigationId(Integer investigationId) {
+		this.investigationId = investigationId;
 	}
 
 	public String getInvestigationTool() {

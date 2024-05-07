@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import dto.InvestigationCapaFormDTO;
+import dto.PerformRCADTO;
 
 public class InvestigationDAO {
 	private static final Logger LOGGER = Logger.getLogger(InvestigationDAO.class.getName());
@@ -158,6 +159,76 @@ public class InvestigationDAO {
 			ps.setString(2, Enums.DeviationStatus.PERFORMING_RCA.name());
 			ps.setInt(3, Integer.parseInt(formDTO.getDeviationId()));
 			ps.executeUpdate();
+		}
+	}
+
+	// RCA
+	public void performRCA(PerformRCADTO rcaDTO) throws SQLException {
+		int investigationId = rcaDTO.getInvestigationId();
+
+		if (rcaDTO.getInvestigationTool().equals(Enums.InvestigationMethodologyEnum.FIVE_WHY.name())) {
+			performFiveWhys(investigationId, rcaDTO);
+		} else if (rcaDTO.getInvestigationTool().equals(Enums.InvestigationMethodologyEnum.ADKOM.name())) {
+			performADKOM(investigationId, rcaDTO);
+		}
+
+		updateDeviationStatus(rcaDTO.getInvestigationId());
+	}
+
+	private void performFiveWhys(int investigationId, PerformRCADTO rcaDTO) throws SQLException {
+		insertFiveWhysStep(investigationId, 1, rcaDTO.getWhyQuestion1(), rcaDTO.getWhyAnswer1());
+		insertFiveWhysStep(investigationId, 2, rcaDTO.getWhyQuestion2(), rcaDTO.getWhyAnswer2());
+		insertFiveWhysStep(investigationId, 3, rcaDTO.getWhyQuestion3(), rcaDTO.getWhyAnswer3());
+		insertFiveWhysStep(investigationId, 4, rcaDTO.getWhyQuestion4(), rcaDTO.getWhyAnswer4());
+		insertFiveWhysStep(investigationId, 5, rcaDTO.getWhyQuestion5(), rcaDTO.getWhyAnswer5());
+	}
+
+	private void insertFiveWhysStep(int investigationId, int stepNumber, String question, String answer)
+			throws SQLException {
+		Connection connection = DatabaseUtility.connect();
+		String sql = "INSERT INTO five_whys_steps (investigation_id, why_number, question, answer) VALUES (?, ?, ?, ?)";
+		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			statement.setInt(1, investigationId);
+			statement.setInt(2, stepNumber);
+			statement.setString(3, question);
+			statement.setString(4, answer);
+			statement.executeUpdate();
+		}
+	}
+
+	private void performADKOM(int investigationId, PerformRCADTO rcaDTO) throws SQLException {
+		insertADKOMStep(investigationId, "ABILITY", rcaDTO.getAbilityAssessment(), rcaDTO.getAbilityResult());
+		insertADKOMStep(investigationId, "DIRECTION", rcaDTO.getDirectionAssessment(), rcaDTO.getDirectionResult());
+		insertADKOMStep(investigationId, "KNOWLEDGE", rcaDTO.getKnowledgeAssessment(), rcaDTO.getKnowledgeResult());
+		insertADKOMStep(investigationId, "OPPORTUNITY", rcaDTO.getOpportunityAssessment(),
+				rcaDTO.getOpportunityResult());
+		insertADKOMStep(investigationId, "MOTIVATION", rcaDTO.getMotivationAssessment(), rcaDTO.getMotivationResult());
+	}
+
+	private void insertADKOMStep(int investigationId, String step, String assessment, Boolean result)
+			throws SQLException {
+		Connection connection = DatabaseUtility.connect();
+		String sql = "INSERT INTO adkom_steps (investigation_id, step, assessment, result) VALUES (?, ?, ?, ?)";
+		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			statement.setInt(1, investigationId);
+			statement.setString(2, step);
+			statement.setString(3, assessment);
+			if (result != null) {
+				statement.setBoolean(4, result);
+			} else {
+				statement.setNull(4, java.sql.Types.BOOLEAN);
+			}
+			statement.executeUpdate();
+		}
+	}
+
+	private void updateDeviationStatus(Integer deviationId) throws SQLException {
+		Connection connection = DatabaseUtility.connect();
+		String sql = "UPDATE deviations SET status = ?::deviation_status WHERE id = ?";
+		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			statement.setString(1, Enums.DeviationStatus.CAPA_INITIATED.name());
+			statement.setInt(2, deviationId);
+			statement.executeUpdate();
 		}
 	}
 }

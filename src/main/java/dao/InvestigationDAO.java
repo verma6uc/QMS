@@ -173,6 +173,8 @@ public class InvestigationDAO {
 		}
 
 		updateDeviationStatus(rcaDTO.getInvestigationId());
+		updateInvestigationDetails(rcaDTO.getInvestigationId(), rcaDTO.getInvestigationTool(),
+				rcaDTO.getRootCauseConclusion(), rcaDTO.getRiskImpactAssessment());
 	}
 
 	private void performFiveWhys(int investigationId, PerformRCADTO rcaDTO) throws SQLException {
@@ -229,6 +231,35 @@ public class InvestigationDAO {
 			statement.setString(1, Enums.DeviationStatus.CAPA_INITIATED.name());
 			statement.setInt(2, deviationId);
 			statement.executeUpdate();
+		}
+	}
+
+	public void updateInvestigationDetails(int investigationId, String methodology, String rootCauseConclusion,
+			String riskImpactAssessment) throws SQLException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = DatabaseUtility.connect(); // Assume DatabaseUtility is a class that handles your database
+													// connection
+			String sql = "UPDATE public.investigations SET  methodology = ?::public.investigation_methodology_enum, root_cause_conclusion = ?, risk_impact_assessment = ? WHERE id = ?";
+
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, methodology);
+			statement.setString(2, rootCauseConclusion);
+			statement.setString(3, riskImpactAssessment);
+			statement.setInt(4, investigationId);
+
+			int affectedRows = statement.executeUpdate();
+			if (affectedRows == 0) {
+				throw new SQLException("Updating investigation failed, no rows affected.");
+			}
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+			if (connection != null) {
+				connection.close();
+			}
 		}
 	}
 }

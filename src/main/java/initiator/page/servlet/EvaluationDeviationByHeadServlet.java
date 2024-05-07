@@ -1,3 +1,5 @@
+package initiator.page.servlet;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -16,7 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@WebServlet("/evaluationByHead")
+@WebServlet("/EvaluationDeviationByHeadServlet")
 public class EvaluationDeviationByHeadServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;

@@ -102,7 +102,9 @@ if (request.getSession().getAttribute("user") == null) {
         <p class="card-text">
             Please fill out the following form to proceed with the investigation of the deviation.
         </p>
-        <form action="/action?widgetId=WIDGET_ID" method="post" id="investigationForm">
+        <form action="/performRCA" method="post" id="investigationForm">
+                	<input type="hidden" name="investigationId" value="<%= request.getParameter("investigation_id")%>"> 
+        
             <div class="mb-3">
                 <label for="investigationTool" class="form-label">Investigation Tool Selection</label>
                 <select class="form-select" id="investigationTool" name="investigationTool" required>

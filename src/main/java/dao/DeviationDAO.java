@@ -363,7 +363,7 @@ public class DeviationDAO {
 
 		// Update department and user/user group associations (assuming separate tables
 		// exist)
-		if (reviewDTO.getDecision().equalsIgnoreCase("Submit")) {
+		if (reviewDTO.getDecision().equalsIgnoreCase("APPROVED_BY_QA")) {
 			updateDepartmentAssociations(deviationId, reviewDTO.getDepartment());
 			updateUserGroupAssociations(deviationId, reviewDTO.getUserGroup());
 		}

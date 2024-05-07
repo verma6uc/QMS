@@ -135,7 +135,7 @@ public class CapaDAO {
 	// Capa initiation
 	public void initiateCapa(InitiatingCapaDTO capaDTO) throws SQLException {
 		Connection connection = DatabaseUtility.connect();
-		String sql = "INSERT INTO capas (deviation_id, description, responsible_user_id, action_type, completion_date, "
+		String sql = "INSERT INTO capas (deviation_id, description, responsible_user_id, action_type, target_closure_date, "
 				+ "change_control_required, interim_control_required, interim_control_details, effectiveness_plan, created_at) "
 				+ "VALUES (?, ?, ?, ?::capa_type, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
 
@@ -144,7 +144,7 @@ public class CapaDAO {
 			statement.setString(2, capaDTO.getDescription());
 			statement.setObject(3, capaDTO.getResponsibleUserId(), java.sql.Types.INTEGER);
 			statement.setString(4, capaDTO.getActionType());
-			statement.setString(5, capaDTO.getCompletionDate());
+			statement.setDate(5, java.sql.Date.valueOf( capaDTO.getTargetClosureDate()));
 			statement.setObject(6, capaDTO.getChangeControlRequired(), java.sql.Types.BOOLEAN);
 			statement.setObject(7, capaDTO.getInterimControlRequired(), java.sql.Types.BOOLEAN);
 			statement.setString(8, capaDTO.getInterimControlDetails());

@@ -138,6 +138,43 @@ function initializeSelect2() {
             }
         });
     });
+    
+    
+     $('input[data-parent]').each(function() {
+        var $dependentInput = $(this);
+        var parentId = $dependentInput.data('parent');
+
+        $('#' + parentId).on('input', function() {
+            var parentValue = $(this).val(); // Get the current value of the parent input
+            if (parentValue) {
+                updateDependentInput($dependentInput, parentValue);
+            } else {
+                $dependentInput.val(''); // Clear the dependent input if no value in parent
+            }
+        });
+    });
+}
+
+function updateDependentInput($input, parentValue) {
+    var sqlData = $input.data('sql');
+    if (sqlData) {
+    var modifiedSqlData = sqlData.replace('?', parentValue); // Modify SQL data with actual parent value
+
+    $.ajax({
+        type: 'POST',
+        url: '/data/fetch?elementType=INPUT', // Backend URL that executes SQL queries
+        data: { sql: modifiedSqlData },
+        dataType: 'json',
+        success: function(data) {
+            if (data.value) {
+                $input.val(data.value); // Update the input field with data from the server
+            }
+        },
+        error: function() {
+            console.error('Error fetching data for input.');
+        }
+    });
+    }
 }
 
 

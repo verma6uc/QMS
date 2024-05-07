@@ -95,82 +95,84 @@ if (request.getSession().getAttribute("user") == null) {
 
 					<!-- Key Metrics -->
    
-   <div class="card">
-    <div class="card-header">Initiate CAPA</div>
-    <div class="card-body">
-        <h5 class="card-title">CAPA Submission Form</h5>
-        <p class="card-text">Please fill out the form below to initiate a CAPA. All fields marked with an asterisk are required.</p>
-        <form action="/action?widgetId=WIDGET_ID" method="post" id="capaForm">
-            <div class="mb-3">
-                <label for="capaDescription" class="form-label">CAPA Description *</label>
-                <textarea class="form-control" id="capaDescription" name="description" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="responsibleUser" class="form-label">Assigned Responsible Person *</label>
-                <select class="form-select" id="responsibleUser" name="responsible_user_id" required data-sql="SELECT id,first_name||' '||last_name as name  user_name FROM users">
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="capaType" class="form-label">CAPA Type *</label>
-                <select class="form-select" id="capaType" name="action_type" required>
-                    <option value="CORRECTIVE">Corrective</option>
-                    <option value="PREVENTIVE">Preventive</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="targetDate" class="form-label">Target Closure Date *</label>
-                <input type="date" class="form-control" id="targetDate" name="completion_date" required>
-            </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="changeControlRequired" name="change_control_required">
-                <label for="changeControlRequired" class="form-check-label">Change Control Required</label>
-            </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="interimControlRequired" name="interim_control_required">
-                <label for="interimControlRequired" class="form-check-label">Interim Control Required</label>
-            </div>
-            <div class="mb-3" id="justificationForNoInterimControl" style="display: none;">
-                <label for="justificationText" class="form-label">Justification for No Interim Control</label>
-                <textarea class="form-control" id="justificationText" name="interim_control_details"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="effectivenessPlan" class="form-label">Effectiveness Check Plan *</label>
-                <textarea class="form-control" id="effectivenessPlan" name="effectiveness_plan" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit CAPA</button>
-        </form>
-    </div>
-</div>
-
+     <div class="card">
+  <div class="card-header">CAPA Initiation Form</div>
+  <div class="card-body">
+    <h5 class="card-title">Initiate Corrective and Preventive Actions</h5>
+    <p class="card-text">
+      Please fill all mandatory fields to initiate a CAPA. Ensure information is accurate for effective resolution.
+    </p>
+     <form action="/initiateCapa" method="post" id="capaForm">
+             	<input type="hidden" name="deviationId" value="<%= request.getParameter("deviation_id")%>"> 
+  <div class="mb-3">
+    <label for="capaDescription" class="form-label">CAPA Description<span class="text-danger">*</span></label>
+    <textarea class="form-control" id="capaDescription" name="description" required></textarea>
+  </div>
+  <div class="mb-3">
+    <label for="responsiblePerson" class="form-label">Assigned Responsible Person<span class="text-danger">*</span></label>
+    <select class="form-select" id="responsiblePerson" name="responsibleUserId" required data-sql="select id,first_name||' '||last_name as name from users u "></select>
+  </div>
+  <div class="mb-3">
+    <label for="capaType" class="form-label">CAPA Type<span class="text-danger">*</span></label>
+    <select class="form-select" id="capaType" name="actionType" required>
+      <option value="CORRECTIVE">Corrective</option>
+      <option value="PREVENTIVE">Preventive</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="targetClosureDate" class="form-label">Target Closure Date<span class="text-danger">*</span></label>
+    <input type="date" class="form-control" id="targetClosureDate" name="targetClosureDate" required>
+  </div>
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="changeControlRequired">
+    <input type="hidden" name="changeControlRequired" id="changeControlRequiredHidden" value="false">
+    <label class="form-check-label" for="changeControlRequired">Change Control Required?</label>
+  </div>
+  <div class="mb-3 form-check" id="interimControlGroup" style="display: none;">
+    <input type="checkbox" class="form-check-input" id="interimControlRequired">
+    <input type="hidden" name="interimControlRequired" id="interimControlRequiredHidden" value="false">
+    <label class="form-check-label" for="interimControlRequired">Interim Control Required?</label>
+  </div>
+  <div class="mb-3" id="justificationGroup" style="display: none;">
+    <label for="justificationForNoInterimControl" class="form-label">Justification for No Interim Control</label>
+    <textarea class="form-control" id="justificationForNoInterimControl" name="justificationForNoInterimControl"></textarea>
+  </div>
+  <div class="mb-3">
+    <label for="effectivenessCheckPlan" class="form-label">Effectiveness Check Plan<span class="text-danger">*</span></label>
+    <textarea class="form-control" id="effectivenessCheckPlan" name="effectivenessCheckPlan" required></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit CAPA</button>
+</form>
 <script>
-    document.getElementById('interimControlRequired').addEventListener('change', function() {
-        var controlPanel = document.getElementById('justificationForNoInterimControl');
-        if (this.checked) {
-            controlPanel.style.display = 'none';
-        } else {
-            controlPanel.style.display = 'block';
-        }
-    });
+  document.getElementById('changeControlRequired').addEventListener('change', function() {
+    var isChecked = this.checked;
+    document.getElementById('changeControlRequiredHidden').value = isChecked.toString();
+    var interimControlGroup = document.getElementById('interimControlGroup');
+    var justificationGroup = document.getElementById('justificationGroup');
+    var justificationInput = document.getElementById('justificationForNoInterimControl');
 
-    document.getElementById('capaForm').addEventListener('submit', function(event) {
-        let targetDate = new Date(document.getElementById('targetDate').value);
-        let today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
-        if (targetDate < today) {
-            alert("The target closure date must be in the future.");
-            event.preventDefault();
-            return false;
-        }
-        
-        if (!document.getElementById('interimControlRequired').checked && !document.getElementById('justificationText').value) {
-            alert("Please provide justification for not requiring interim control.");
-            event.preventDefault();
-            return false;
-        }
-        return true;
-    });
+    var interimControlCheckbox = document.getElementById('interimControlRequired');
+    if (isChecked) {
+      interimControlGroup.style.display = 'block';
+      // Ensure we update the hidden field value when interim control checkbox is changed
+      interimControlCheckbox.addEventListener('change', function() {
+        document.getElementById('interimControlRequiredHidden').value = this.checked.toString();
+        if (this.checked) {
+            justificationGroup.style.display = 'none';
+            justificationInput.value = ''; // Clear the input when interim control is required
+          } else {
+            justificationGroup.style.display = 'block';
+          }
+      });
+      justificationGroup.style.display = interimControlCheckbox.checked ? 'none' : 'block';
+    } else {
+      interimControlGroup.style.display = 'none';
+      justificationGroup.style.display = 'none';
+    }
+  });
 </script>
+     
+   
  
 				</div>
 			</div>

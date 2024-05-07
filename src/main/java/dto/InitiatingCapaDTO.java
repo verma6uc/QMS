@@ -5,7 +5,7 @@ public class InitiatingCapaDTO {
 	private String description;
 	private Integer responsibleUserId;
 	private String actionType;
-	private String completionDate; // Using String to store date for simplicity. Could be changed to LocalDate
+	private String targetClosureDate; // Using String to store date for simplicity. Could be changed to LocalDate
 									// based on actual usage.
 	private Boolean changeControlRequired;
 	private Boolean interimControlRequired;
@@ -18,14 +18,14 @@ public class InitiatingCapaDTO {
 	}
 
 	public InitiatingCapaDTO(Integer deviationId, String description, Integer responsibleUserId, String actionType,
-			String completionDate, Boolean changeControlRequired, Boolean interimControlRequired,
+			String targetClosureDate, Boolean changeControlRequired, Boolean interimControlRequired,
 			String interimControlDetails, String effectivenessPlan) {
 		super();
 		this.deviationId = deviationId;
 		this.description = description;
 		this.responsibleUserId = responsibleUserId;
 		this.actionType = actionType;
-		this.completionDate = completionDate;
+		this.targetClosureDate = targetClosureDate;
 		this.changeControlRequired = changeControlRequired;
 		this.interimControlRequired = interimControlRequired;
 		this.interimControlDetails = interimControlDetails;
@@ -64,12 +64,12 @@ public class InitiatingCapaDTO {
 		this.actionType = actionType;
 	}
 
-	public String getCompletionDate() {
-		return completionDate;
+	public String getTargetClosureDate() {
+		return targetClosureDate;
 	}
 
-	public void setCompletionDate(String completionDate) {
-		this.completionDate = completionDate;
+	public void setTargetClosureDate(String targetClosureDate) {
+		this.targetClosureDate = targetClosureDate;
 	}
 
 	public Boolean getChangeControlRequired() {
@@ -107,10 +107,12 @@ public class InitiatingCapaDTO {
 	@Override
 	public String toString() {
 		return "InitiatingCapaDTO [deviationId=" + deviationId + ", description=" + description + ", responsibleUserId="
-				+ responsibleUserId + ", actionType=" + actionType + ", completionDate=" + completionDate
+				+ responsibleUserId + ", actionType=" + actionType + ", targetClosureDate=" + targetClosureDate
 				+ ", changeControlRequired=" + changeControlRequired + ", interimControlRequired="
 				+ interimControlRequired + ", interimControlDetails=" + interimControlDetails + ", effectivenessPlan="
 				+ effectivenessPlan + "]";
 	}
+
+	 
 
 }

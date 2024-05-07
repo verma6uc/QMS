@@ -44,7 +44,7 @@ public class InitiateCapaServlet extends HttpServlet {
 			String actionType = !request.getParameter("actionType").isEmpty()
 					? Enums.CapaType.valueOf(request.getParameter("actionType").toUpperCase()).name()
 					: null;
-			String completionDate = request.getParameter("completionDate");
+			String targetClosureDate = request.getParameter("targetClosureDate");
 			Boolean changeControlRequired = !request.getParameter("changeControlRequired").isEmpty()
 					? Boolean.parseBoolean(request.getParameter("changeControlRequired"))
 					: null;
@@ -53,17 +53,18 @@ public class InitiateCapaServlet extends HttpServlet {
 					: null;
 			String interimControlDetails = request.getParameter("interimControlDetails");
 			String effectivenessPlan = request.getParameter("effectivenessPlan");
-			if (completionDate.isEmpty()) {
+			if (targetClosureDate.isEmpty()) {
 				jsonResponse.addProperty("message", "Completion date cannot be empty.");
 				response.getWriter().append(jsonResponse.toString());
 				return;
 			}
 			InitiatingCapaDTO capaDTO = new InitiatingCapaDTO(deviationId, description, responsibleUserId, actionType,
-					completionDate, changeControlRequired, interimControlRequired, interimControlDetails,
+					targetClosureDate, changeControlRequired, interimControlRequired, interimControlDetails,
 					effectivenessPlan);
 			new CapaDAO().initiateCapa(capaDTO);
 			jsonResponse.addProperty("message", "Successfully added new CAPA.");
 		} catch (NumberFormatException e) {
+			e.printStackTrace();
 			jsonResponse.addProperty("message", "Invalid input. Please enter correct values.");
 		} catch (IllegalArgumentException e) {
 			jsonResponse.addProperty("message", "Invalid CAPA type.");

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import dto.ApprovalByQADTO;
 import dto.CrossFunctionalDeviationReviewDTO;
 import dto.DepartmentalDeviationReviewDTO;
 import dto.DeviationInitiateDTO;
@@ -387,7 +388,7 @@ public class DeviationDAO {
 			try (PreparedStatement statement = connection.prepareStatement(sql)) {
 				statement.setString(1, comments);
 				statement.setInt(2, userId);
- 				statement.setInt(3, deviationId);
+				statement.setInt(3, deviationId);
 				statement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
 				statement.executeUpdate();
 			}
@@ -433,6 +434,47 @@ public class DeviationDAO {
 				insertStatement.setInt(2, userGroupId);
 				insertStatement.executeUpdate();
 			}
+		}
+	}
+
+//	For Approved by QA
+	public void updateDeviationStatus(ApprovalByQADTO approvalByQADTO) throws SQLException {
+		Connection connection = DatabaseUtility.connect();
+		String updateQuery = "UPDATE public.deviations SET status = ?::deviation_status, updated_at = CURRENT_TIMESTAMP WHERE id = ?";
+		try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+			statement.setString(1, approvalByQADTO.getDecision());
+			statement.setInt(2, approvalByQADTO.getDeviationId());
+			statement.executeUpdate();
+		}
+	}
+
+	public void insertComments(ApprovalByQADTO approvalByQADTO) throws SQLException {
+		Connection connection = DatabaseUtility.connect();
+		String insertQuery = "INSERT INTO public.comments (\"content\", author_id, related_table, related_id, created_at) VALUES (?, ?, 'deviations', ?, CURRENT_TIMESTAMP)";
+		try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
+			statement.setString(1, approvalByQADTO.getApproverComments());
+			if (approvalByQADTO.getUserId() != null) {
+				statement.setInt(2, approvalByQADTO.getUserId());
+			} else {
+				statement.setNull(2, java.sql.Types.INTEGER);
+			}
+			statement.setInt(3, approvalByQADTO.getDeviationId());
+			statement.executeUpdate();
+		}
+	}
+
+	public void insertJustification(ApprovalByQADTO approvalByQADTO) throws SQLException {
+		Connection connection = DatabaseUtility.connect();
+		String insertQuery = "INSERT INTO public.comments (\"content\", author_id, related_table, related_id, created_at) VALUES (?, ?, 'deviations', ?, CURRENT_TIMESTAMP)";
+		try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
+			statement.setString(1, approvalByQADTO.getJustification());
+			if (approvalByQADTO.getUserId() != null) {
+				statement.setInt(2, approvalByQADTO.getUserId());
+			} else {
+				statement.setNull(2, java.sql.Types.INTEGER);
+			}
+			statement.setInt(3, approvalByQADTO.getDeviationId());
+			statement.executeUpdate();
 		}
 	}
 }

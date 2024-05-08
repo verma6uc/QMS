@@ -110,11 +110,11 @@ public class InitiateDeviation extends HttpServlet {
 		// 4. Call DAO method to initiate deviation
 
 		try {
-			deviationDAO.initiateDeviation(dto);
+			int id = deviationDAO.initiateDeviation(dto);
 
 			// 5. Send success response
 			String jsonResponse = new Gson()
-					.toJson(new StandardResponse("success", "Deviation initiated successfully."));
+					.toJson(new StandardResponse("success", "Deviation initiated successfully. Deviation Id: " + id));
 			response.setContentType("application/json");
 			response.getWriter().print(jsonResponse);
 		} catch (SQLException e) {

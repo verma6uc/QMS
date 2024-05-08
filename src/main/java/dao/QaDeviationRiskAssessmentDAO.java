@@ -190,7 +190,7 @@ public class QaDeviationRiskAssessmentDAO {
 			throws SQLException {
 		Connection connection = DatabaseUtility.connect();
 		String categoryUpdateSql = "UPDATE deviations SET risk_category = ? WHERE id = ?";
-		String closureDateUpdateSql = "UPDATE deviations SET closure_date = ? WHERE id = ?";
+		String closureDateUpdateSql = "UPDATE deviations SET target_closure_date = ? WHERE id = ?";
 
 		String riskCategory;
 		if (totalRiskScore >= 0 && totalRiskScore <= 5) {

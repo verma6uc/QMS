@@ -150,7 +150,7 @@ public class DeviationDAO {
 		}
 	}
 
-	public void initiateDeviation(DeviationInitiateDTO dto) throws SQLException {
+	public int initiateDeviation(DeviationInitiateDTO dto) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -182,6 +182,8 @@ public class DeviationDAO {
 
 			// If all successful, commit the transaction
 			conn.commit();
+
+			return deviationId;
 		} catch (SQLException e) {
 			conn.rollback();
 			throw e;

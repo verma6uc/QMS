@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import dao.DeviationDAO;
 import dao.UserDAO;
 import dto.CrossFunctionalDeviationReviewDTO;
+import model.Enums.DeviationStatus;
 import model.User;
 
 @WebServlet("/crossFunctionalDeviationReview")
@@ -54,6 +55,11 @@ public class CrossFunctionalDeviationReviewServlet extends HttpServlet {
 
 		CrossFunctionalDeviationReviewDTO reviewDTO = new CrossFunctionalDeviationReviewDTO();
 		reviewDTO.setCrossFunctionalRequired(request.getParameter("crossFunctionalRequired"));
+		if (reviewDTO.getCrossFunctionalRequired().equals("Yes")) {
+			reviewDTO.setDecision(DeviationStatus.PENDING_CFT_REVIEW.name());
+		} else {
+			reviewDTO.setDecision(DeviationStatus.PENDING_QA_REVIEW.name());
+		}
 		if (!reviewDTO.getCrossFunctionalRequired().isEmpty()) {
 
 			if (!request.getParameter("department").isEmpty()) {
@@ -70,7 +76,6 @@ public class CrossFunctionalDeviationReviewServlet extends HttpServlet {
 
 		}
 
-		reviewDTO.setDecision(request.getParameter("decision"));
 		reviewDTO.setJustification(request.getParameter("justification"));
 		reviewDTO.setComments(request.getParameter("comments"));
 

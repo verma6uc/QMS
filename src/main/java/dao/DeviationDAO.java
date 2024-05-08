@@ -370,6 +370,16 @@ public class DeviationDAO {
 			conn.close();
 		}
 	}
+	
+	public void submitCrossFunctionalComment(CrossFunctionalDeviationReviewDTO reviewDTO, int deviationId, int userId)
+			throws SQLException {
+		// Update the status of the deviation
+		updateDeviationStatus(reviewDTO.getDecision(), deviationId, reviewDTO.getJustification());
+
+		// Log the comments
+		logComments(reviewDTO.getComments(), deviationId, userId);
+//		logComments(reviewDTO.getJustification(), deviationId, userId);
+	}
 
 	public void submitDecision(CrossFunctionalDeviationReviewDTO reviewDTO, int deviationId, int userId)
 			throws SQLException {
@@ -377,12 +387,12 @@ public class DeviationDAO {
 		updateDeviationStatus(reviewDTO.getDecision(), deviationId, reviewDTO.getJustification());
 
 		// Log the comments
-		logComments(reviewDTO.getComments(), deviationId, userId);
-		logComments(reviewDTO.getJustification(), deviationId, userId);
+//		logComments(reviewDTO.getComments(), deviationId, userId);
+//		logComments(reviewDTO.getJustification(), deviationId, userId);
 
 		// Update department and user/user group associations (assuming separate tables
 		// exist)
-		if (reviewDTO.getDecision().equalsIgnoreCase("APPROVED_BY_QA")) {
+		if (reviewDTO.getDecision().equalsIgnoreCase("PENDING_CFT_REVIEW")) {
 			updateDepartmentAssociations(deviationId, reviewDTO.getDepartment());
 			updateUserGroupAssociations(deviationId, reviewDTO.getUserGroup());
 		}

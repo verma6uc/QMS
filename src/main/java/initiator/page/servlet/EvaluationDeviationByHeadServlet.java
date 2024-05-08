@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import dao.QaDeviationRiskAssessmentDAO;
+import dao.UserDAO;
 import dto.EvaluationDeviationByHeadDTO;
 import model.Enums;
 import model.User;
@@ -39,6 +40,15 @@ public class EvaluationDeviationByHeadServlet extends HttpServlet {
 
 		if (request.getSession().getAttribute("user") != null) {
 			user = (User) request.getSession().getAttribute("user");
+		}
+
+		if (user == null) {
+			try {
+				user = new UserDAO().getUserById(85).get();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		try {

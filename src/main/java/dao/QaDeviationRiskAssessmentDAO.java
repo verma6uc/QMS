@@ -110,6 +110,7 @@ public class QaDeviationRiskAssessmentDAO {
 		String sql = "INSERT INTO qa_deviation_risk_assessments (deviation_id, factor_type, justification, score, created_at, updated_at, scored_by) VALUES (?, ?::risk_factor_type, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			System.out.println(evaluationDto.getScoredBy());
 			statement.setInt(1, evaluationDto.getDeviationId());
 			statement.setString(2, Enums.RiskFactorType.PROBABILITY.name());
 			statement.setString(3, evaluationDto.getProbabilityJustification());
@@ -127,6 +128,7 @@ public class QaDeviationRiskAssessmentDAO {
 				statement.setObject(4, evaluationDto.getAdditionalProcessingSteps(), java.sql.Types.INTEGER);
 				statement.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
 				statement.setTimestamp(6, new Timestamp(new java.util.Date().getTime()));
+				statement.setInt(7, evaluationDto.getScoredBy());
 				statement.executeUpdate();
 			}
 
@@ -138,6 +140,7 @@ public class QaDeviationRiskAssessmentDAO {
 				statement.setObject(4, evaluationDto.getMicrobiologicallyRelated(), java.sql.Types.INTEGER);
 				statement.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
 				statement.setTimestamp(6, new Timestamp(new java.util.Date().getTime()));
+				statement.setInt(7, evaluationDto.getScoredBy());
 				statement.executeUpdate();
 			}
 
@@ -149,6 +152,7 @@ public class QaDeviationRiskAssessmentDAO {
 				statement.setObject(4, evaluationDto.getProductCrossContamination(), java.sql.Types.INTEGER);
 				statement.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
 				statement.setTimestamp(6, new Timestamp(new java.util.Date().getTime()));
+				statement.setInt(7, evaluationDto.getScoredBy());
 				statement.executeUpdate();
 			}
 
@@ -160,6 +164,7 @@ public class QaDeviationRiskAssessmentDAO {
 				statement.setObject(4, evaluationDto.getProductImpact(), java.sql.Types.INTEGER);
 				statement.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
 				statement.setTimestamp(6, new Timestamp(new java.util.Date().getTime()));
+				statement.setInt(7, evaluationDto.getScoredBy());
 				statement.executeUpdate();
 			}
 
@@ -171,6 +176,7 @@ public class QaDeviationRiskAssessmentDAO {
 				statement.setObject(4, evaluationDto.getComplexityOfInvestigation(), java.sql.Types.INTEGER);
 				statement.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
 				statement.setTimestamp(6, new Timestamp(new java.util.Date().getTime()));
+				statement.setInt(7, evaluationDto.getScoredBy());
 				statement.executeUpdate();
 			}
 
@@ -182,6 +188,7 @@ public class QaDeviationRiskAssessmentDAO {
 				statement.setObject(4, evaluationDto.getCriticalWarrantedByQuality(), java.sql.Types.INTEGER);
 				statement.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
 				statement.setTimestamp(6, new Timestamp(new java.util.Date().getTime()));
+				statement.setInt(7, evaluationDto.getScoredBy());
 				statement.executeUpdate();
 			}
 		}

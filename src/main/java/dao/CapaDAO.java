@@ -1,6 +1,7 @@
 package dao;
 
 import model.Capa;
+import model.Enums.DeviationStatus;
 import utils.DatabaseUtility;
 import java.sql.*;
 import java.util.logging.*;
@@ -160,6 +161,8 @@ public class CapaDAO {
 					}
 				}
 			}
+
+			new DeviationDAO().updateStatus(capaDTO.getDeviationId(), DeviationStatus.CAPA_INITIATED);
 		} finally {
 			if (connection != null)
 				try {

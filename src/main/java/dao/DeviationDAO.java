@@ -79,6 +79,16 @@ public class DeviationDAO {
 		}
 	}
 
+	public void updateStatus(Integer deviationId, DeviationStatus status) throws SQLException {
+		Connection connection = DatabaseUtility.connect();
+		String updateQuery = "UPDATE public.deviations SET status = ?::deviation_status, updated_at = CURRENT_TIMESTAMP WHERE id = ?";
+		try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+			statement.setString(1, status.name());
+			statement.setInt(2, deviationId);
+			statement.executeUpdate();
+		}
+	}
+
 	// Update an existing Deviation
 	public Boolean updateDeviation(Deviation deviation) {
 		String sql = "UPDATE public.deviations SET title = ?, description = ?, "
@@ -195,7 +205,7 @@ public class DeviationDAO {
 	private int insertDeviationRecord(DeviationInitiateDTO dto) throws SQLException {
 		Connection conn = DatabaseUtility.connect();
 		String sql = "INSERT INTO deviations (date_of_occurrence, date_of_identification, time_of_identification, "
-				+ "justification_for_delay, event_related_type, description,initiated_by_user_id,deviation_root_cause,immediate_corrective_action,risk_assessment,standard_proceduure) VALUES (?, ?, ?, ?, ?::event_related_enum, ?,?,?,?,?,?) RETURNING id"; // Assuming
+				+ "justification_for_delay, event_related_type, description,initiated_by_user_id,deviation_root_cause,immediate_corrective_action,risk_assessment,standard_proceduure,status) VALUES (?, ?, ?, ?, ?::event_related_enum, ?,?,?,?,?,?,?::deviation_status) RETURNING id"; // Assuming
 		// //
 		// key
 
@@ -226,6 +236,7 @@ public class DeviationDAO {
 			stmt.setString(9, dto.getImmediateCorrectiveAction());
 			stmt.setString(10, dto.getRiskAssessment());
 			stmt.setString(11, dto.getStandardProcedure());
+			stmt.setString(12, DeviationStatus.OPEN.name());
 
 			// Execute and retrieve the generated deviationId
 			try (ResultSet rs = stmt.executeQuery()) {

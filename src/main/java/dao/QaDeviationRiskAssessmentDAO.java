@@ -255,7 +255,7 @@ public class QaDeviationRiskAssessmentDAO {
 		String sql = "UPDATE deviations SET status = ?::deviation_status WHERE id = ?";
 
 		try (PreparedStatement statement = connection.prepareStatement(sql)) {
-			statement.setString(1, DeviationStatus.APPROVED_BY_QA.name());
+			statement.setString(1, DeviationStatus.PENDING_FINAL_APPROVAL.name());
 			statement.setInt(2, deviationId);
 			statement.executeUpdate();
 		}

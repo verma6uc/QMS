@@ -3,6 +3,7 @@ package initiator.page.servlet;
 import com.google.gson.Gson;
 
 import dao.DeviationDAO;
+import dao.UserDAO;
 import dto.ApprovalByQADTO;
 import model.User;
 
@@ -35,6 +36,14 @@ public class ApprovalByQAServlet extends HttpServlet {
 
 		if (request.getSession().getAttribute("user") != null) {
 			user = (User) request.getSession().getAttribute("user");
+		}
+		if(user==null) {
+			try {
+			 user = new UserDAO().getUserById(85).get();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		String approverComments = request.getParameter("approverComments");

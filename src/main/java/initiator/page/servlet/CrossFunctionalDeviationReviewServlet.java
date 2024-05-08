@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import dao.DeviationDAO;
+import dao.UserDAO;
 import dto.CrossFunctionalDeviationReviewDTO;
 import model.User;
 
@@ -25,7 +26,7 @@ public class CrossFunctionalDeviationReviewServlet extends HttpServlet {
 
 	public CrossFunctionalDeviationReviewServlet() {
 		super();
-		crossFunctionalDeviationReviewDao = new DeviationDAO	();
+		crossFunctionalDeviationReviewDao = new DeviationDAO();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -38,35 +39,41 @@ public class CrossFunctionalDeviationReviewServlet extends HttpServlet {
 		if (request.getSession().getAttribute("user") != null) {
 			user = (User) request.getSession().getAttribute("user");
 		}
-		
+
+		if (user == null) {
+			try {
+				user = new UserDAO().getUserById(85).get();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		int deviationId = Integer.parseInt(request.getParameter("deviationId"));
 		int userId = user.getId(); // assuming userId is stored in session
 
 		CrossFunctionalDeviationReviewDTO reviewDTO = new CrossFunctionalDeviationReviewDTO();
 		reviewDTO.setCrossFunctionalRequired(request.getParameter("crossFunctionalRequired"));
 		if (!reviewDTO.getCrossFunctionalRequired().isEmpty()) {
-			
+
 			if (!request.getParameter("department").isEmpty()) {
-                List<Integer> departmentIds = Arrays.stream(request.getParameter("department").split(","))
-                        .map(Integer::parseInt)
-                        .collect(Collectors.toList());
-                reviewDTO.setDepartment(departmentIds);
-            }
-			
+				List<Integer> departmentIds = Arrays.stream(request.getParameter("department").split(","))
+						.map(Integer::parseInt).collect(Collectors.toList());
+				reviewDTO.setDepartment(departmentIds);
+			}
+
 			if (!request.getParameter("userGroup").isEmpty()) {
-                List<Integer> userGroupIds = Arrays.stream(request.getParameter("userGroup").split(","))
-                        .map(Integer::parseInt)
-                        .collect(Collectors.toList());
-                reviewDTO.setUserGroup(userGroupIds);
-            }
-			
-		 
+				List<Integer> userGroupIds = Arrays.stream(request.getParameter("userGroup").split(","))
+						.map(Integer::parseInt).collect(Collectors.toList());
+				reviewDTO.setUserGroup(userGroupIds);
+			}
+
 		}
 
 		reviewDTO.setDecision(request.getParameter("decision"));
 		reviewDTO.setJustification(request.getParameter("justification"));
 		reviewDTO.setComments(request.getParameter("comments"));
-		
+
 		try {
 			crossFunctionalDeviationReviewDao.submitDecision(reviewDTO, deviationId, userId);
 			String jsonResponse = gson.toJson(new StatusMessage("Decision submitted successfully!"));

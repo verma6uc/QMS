@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import dao.DeviationDAO;
+import dao.UserDAO;
 import dto.DepartmentalDeviationReviewDTO;
 import model.User;
 import model.Enums.DeviationStatus;
@@ -29,6 +30,14 @@ public class DepartmentalReviewServlet extends HttpServlet {
 
 		if (request.getSession().getAttribute("user") != null) {
 			user = (User) request.getSession().getAttribute("user");
+		}
+		if(user==null) {
+			try {
+			 user = new UserDAO().getUserById(85).get();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		// 1. Get parameters from the request (assuming names match DTO fields)

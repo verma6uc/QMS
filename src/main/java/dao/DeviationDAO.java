@@ -391,12 +391,13 @@ public class DeviationDAO {
 	private void logComments(String comments, int deviationId, int userId) throws SQLException {
 		Connection connection = DatabaseUtility.connect();
 		if (comments != null && !comments.isEmpty()) {
-			String sql = "INSERT INTO comments (content, author_id, related_id, created_at) VALUES (?,  ?, ?, ?)";
+			String sql = "INSERT INTO comments (content, author_id, related_id, created_at, deviation_id) VALUES (?, ?, ?, ?, ?)";
 			try (PreparedStatement statement = connection.prepareStatement(sql)) {
 				statement.setString(1, comments);
 				statement.setInt(2, userId);
 				statement.setInt(3, deviationId);
 				statement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+				statement.setInt(5, deviationId);
 				statement.executeUpdate();
 			}
 		}

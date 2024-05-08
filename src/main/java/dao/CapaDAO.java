@@ -133,24 +133,40 @@ public class CapaDAO {
 	}
 
 	// Capa initiation
-	public void initiateCapa(InitiatingCapaDTO capaDTO) throws SQLException {
+	public int initiateCapa(InitiatingCapaDTO capaDTO) throws SQLException {
+		int capaId = 0;
 		Connection connection = DatabaseUtility.connect();
 		String sql = "INSERT INTO capas (deviation_id, description, responsible_user_id, action_type, target_closure_date, "
 				+ "change_control_required, interim_control_required, interim_control_details, effectiveness_plan, created_at) "
 				+ "VALUES (?, ?, ?, ?::capa_type, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
 
-		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+		try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			statement.setObject(1, capaDTO.getDeviationId(), java.sql.Types.INTEGER);
 			statement.setString(2, capaDTO.getDescription());
 			statement.setObject(3, capaDTO.getResponsibleUserId(), java.sql.Types.INTEGER);
 			statement.setString(4, capaDTO.getActionType());
-			statement.setDate(5, java.sql.Date.valueOf( capaDTO.getTargetClosureDate()));
+			statement.setDate(5, java.sql.Date.valueOf(capaDTO.getTargetClosureDate()));
 			statement.setObject(6, capaDTO.getChangeControlRequired(), java.sql.Types.BOOLEAN);
 			statement.setObject(7, capaDTO.getInterimControlRequired(), java.sql.Types.BOOLEAN);
 			statement.setString(8, capaDTO.getInterimControlDetails());
 			statement.setString(9, capaDTO.getEffectivenessPlan());
 
-			statement.executeUpdate();
+			int affectedRows = statement.executeUpdate();
+
+			if (affectedRows > 0) {
+				try (ResultSet rs = statement.getGeneratedKeys()) {
+					if (rs.next()) {
+						capaId = rs.getInt(1); // Retrieves the first column of the ResultSet, which should be the ID.
+					}
+				}
+			}
+		} finally {
+			if (connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					/* ignored */ }
 		}
+		return capaId;
 	}
 }

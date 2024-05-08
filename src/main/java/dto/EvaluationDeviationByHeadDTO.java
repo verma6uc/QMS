@@ -23,6 +23,7 @@ public class EvaluationDeviationByHeadDTO {
 	private String descriptionOfRisk;
 	private Integer accountableDepartment; // Assuming department ID is an Integer
 	private Date targetClosureDate; // Assuming use of Java's LocalDate class for date
+	private Integer scoredBy;
 
 	public EvaluationDeviationByHeadDTO() {
 		super();
@@ -35,7 +36,7 @@ public class EvaluationDeviationByHeadDTO {
 			Integer productCrossContamination, String contaminationJustification, Integer productImpact,
 			String impactJustification, Integer complexityOfInvestigation, String complexityJustification,
 			Integer criticalWarrantedByQuality, String criticalJustification, Boolean isDeviationRepeated,
-			String descriptionOfRisk, Integer accountableDepartment, Date targetClosureDate) {
+			String descriptionOfRisk, Integer accountableDepartment, Date targetClosureDate, Integer scoredBy) {
 		super();
 		this.deviationId = deviationId;
 		this.probabilityOfRecurrence = probabilityOfRecurrence;
@@ -56,6 +57,7 @@ public class EvaluationDeviationByHeadDTO {
 		this.descriptionOfRisk = descriptionOfRisk;
 		this.accountableDepartment = accountableDepartment;
 		this.targetClosureDate = targetClosureDate;
+		this.scoredBy = scoredBy;
 	}
 
 	public Integer getDeviationId() {
@@ -208,6 +210,14 @@ public class EvaluationDeviationByHeadDTO {
 
 	public void setTargetClosureDate(Date targetClosureDate) {
 		this.targetClosureDate = targetClosureDate;
+	}
+
+	public Integer getScoredBy() {
+		return scoredBy;
+	}
+
+	public void setScoredBy(Integer scoredBy) {
+		this.scoredBy = scoredBy;
 	}
 
 	@Override

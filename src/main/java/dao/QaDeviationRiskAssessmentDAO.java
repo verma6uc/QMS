@@ -107,7 +107,7 @@ public class QaDeviationRiskAssessmentDAO {
 
 	public void saveAssessment(EvaluationDeviationByHeadDTO evaluationDto) throws SQLException {
 		Connection connection = DatabaseUtility.connect();
-		String sql = "INSERT INTO qa_deviation_risk_assessments (deviation_id, factor_type, justification, score, created_at, updated_at) VALUES (?, ?::risk_factor_type, ?, ?, ?, ?)";
+		String sql = "INSERT INTO qa_deviation_risk_assessments (deviation_id, factor_type, justification, score, created_at, updated_at, scored_by) VALUES (?, ?::risk_factor_type, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement statement = connection.prepareStatement(sql)) {
 			statement.setInt(1, evaluationDto.getDeviationId());
@@ -116,6 +116,7 @@ public class QaDeviationRiskAssessmentDAO {
 			statement.setInt(4, evaluationDto.getProbabilityOfRecurrence());
 			statement.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
 			statement.setTimestamp(6, new Timestamp(new java.util.Date().getTime()));
+			statement.setInt(7, evaluationDto.getScoredBy());
 			statement.executeUpdate();
 
 			if (evaluationDto.getAdditionalProcessingSteps() != null) {

@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import dao.QaDeviationRiskAssessmentDAO;
 import dto.EvaluationDeviationByHeadDTO;
 import model.Enums;
+import model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,6 +34,13 @@ public class EvaluationDeviationByHeadServlet extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("application/json");
 		JsonObject jsonObject = new JsonObject();
+
+		User user = null;
+
+		if (request.getSession().getAttribute("user") != null) {
+			user = (User) request.getSession().getAttribute("user");
+		}
+
 		try {
 			// Fetch data from request parameters
 			int deviationId = Integer.parseInt(request.getParameter("deviationId"));
@@ -72,7 +80,7 @@ public class EvaluationDeviationByHeadServlet extends HttpServlet {
 					microbiologicallyRelated, microbiologicallyRelatedJustification, productCrossContamination,
 					contaminationJustification, productImpact, impactJustification, complexityOfInvestigation,
 					complexityJustification, criticalWarrantedByQuality, criticalJustification, isDeviationRepeated,
-					descriptionOfRisk, accountableDepartment, targetClosureDate);
+					descriptionOfRisk, accountableDepartment, targetClosureDate, user.getId());
 			evaluationDeviationByHeadDAO.saveAssessment(evaluationDto);
 
 			// Calculate total risk score

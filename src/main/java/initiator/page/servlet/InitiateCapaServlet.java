@@ -61,8 +61,8 @@ public class InitiateCapaServlet extends HttpServlet {
 			InitiatingCapaDTO capaDTO = new InitiatingCapaDTO(deviationId, description, responsibleUserId, actionType,
 					targetClosureDate, changeControlRequired, interimControlRequired, interimControlDetails,
 					effectivenessPlan);
-			new CapaDAO().initiateCapa(capaDTO);
-			jsonResponse.addProperty("message", "Successfully added new CAPA.");
+			int id = new CapaDAO().initiateCapa(capaDTO);
+			jsonResponse.addProperty("message", "Successfully added new CAPA. Capa ID: " + id);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			jsonResponse.addProperty("message", "Invalid input. Please enter correct values.");

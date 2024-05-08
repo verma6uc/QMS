@@ -90,7 +90,7 @@ public class LoginServlet extends HttpServlet {
                     // Redirect to the first page slug the user has access to
                     Page firstPage = userPages.get(0);
                     String firstPageSlug = firstPage.getSlug();
-                    response.sendRedirect(firstPageSlug + ".jsp");
+                    response.sendRedirect(firstPageSlug );
                     return;
                 } else {
                     // If no pages are found, set an error message

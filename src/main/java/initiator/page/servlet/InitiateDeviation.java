@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import dao.DeviationDAO;
+import dao.UserDAO;
 import dto.DeviationInitiateDTO;
 import model.User;
 
@@ -34,6 +36,14 @@ public class InitiateDeviation extends HttpServlet {
 
 		if (request.getSession().getAttribute("user") != null) {
 			user = (User) request.getSession().getAttribute("user");
+		}
+		if(user==null) {
+			try {
+			 user = new UserDAO().getUserById(85).get();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		// 1. Retrieve form data
@@ -80,7 +90,7 @@ public class InitiateDeviation extends HttpServlet {
 				dto.setProductId(Integer.parseInt(request.getParameter("productId")));
 			}
 			if (!request.getParameter("batchIds").isEmpty()) {
-				List<Integer> batchIds = Arrays.stream(request.getParameter("batchIds").split(","))
+				List<Integer> batchIds = Arrays.stream(request.getParameterValues("batchIds"))
 						.map(Integer::parseInt).collect(Collectors.toList());
 				dto.setBatchIds(batchIds);
 			}

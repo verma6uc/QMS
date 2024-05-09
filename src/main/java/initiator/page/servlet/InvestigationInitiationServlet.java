@@ -51,7 +51,7 @@ public class InvestigationInitiationServlet extends HttpServlet {
 	private InvestigationCapaFormDTO getFormData(HttpServletRequest req) {
 		InvestigationCapaFormDTO formDTO = new InvestigationCapaFormDTO();
 		formDTO.setInvestigationRequired(Boolean.parseBoolean(req.getParameter("investigationRequired")));
-		formDTO.setDescriptionOfInvestigation(req.getParameter("descriptionOfInvestigation"));
+		formDTO.setDescriptionOfInvestigation(req.getParameter("description"));
 		formDTO.setDeviationId(req.getParameter("deviationId"));
 
 		String investigatorIdsParam = req.getParameter("investigatorIds");

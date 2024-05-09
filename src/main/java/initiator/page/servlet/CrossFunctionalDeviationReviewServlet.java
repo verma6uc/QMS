@@ -63,15 +63,16 @@ public class CrossFunctionalDeviationReviewServlet extends HttpServlet {
 		if (!reviewDTO.getCrossFunctionalRequired().isEmpty()) {
 
 			if (!request.getParameter("department").isEmpty()) {
-				List<Integer> departmentIds = Arrays.stream(request.getParameter("department").split(","))
+				List<Integer> departmentIds = Arrays.stream(request.getParameterValues("department"))
 						.map(Integer::parseInt).collect(Collectors.toList());
 				reviewDTO.setDepartment(departmentIds);
 			}
 
 			if (!request.getParameter("userGroup").isEmpty()) {
-				List<Integer> userGroupIds = Arrays.stream(request.getParameter("userGroup").split(","))
+				List<Integer> userGroupIds = Arrays.stream(request.getParameterValues("userGroup"))
 						.map(Integer::parseInt).collect(Collectors.toList());
 				reviewDTO.setUserGroup(userGroupIds);
+				
 			}
 
 		}
